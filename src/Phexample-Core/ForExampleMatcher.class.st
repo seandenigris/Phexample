@@ -18,19 +18,43 @@ ForExampleMatcher >> shouldBeEven [
 ]
 
 { #category : #'as yet unclassified' }
-ForExampleMatcher >> shouldBeFive [
-	(2+3) should = 5
+ForExampleMatcher >> shouldBeOdd [
+  5 should be odd
 ]
 
 { #category : #'as yet unclassified' }
-ForExampleMatcher >> shouldBeOdd [
-  5 should be odd
+ForExampleMatcher >> shouldEqualFive [
+	(2 + 3) should = 5
 ]
 
 { #category : #'as yet unclassified' }
 ForExampleMatcher >> shouldIncludeFoo [
   |set|
 	set := #(foo bar qux). 
-	set should includes: #foo.
+	set should be includes: #foo.
 	^set
+]
+
+{ #category : #'as yet unclassified' }
+ForExampleMatcher >> shouldNotEqualSeven [
+	(2 + 3) should not = 7
+]
+
+{ #category : #'as yet unclassified' }
+ForExampleMatcher >> shouldSignal [
+
+	[ 5 should = 6 ] should signal: AssertionFailure.
+]
+
+{ #category : #'as yet unclassified' }
+ForExampleMatcher >> shouldSignalIfFiveShouldNotEqualFive [
+
+	[ 5 should not = 5 ] should signal: AssertionFailure.
+]
+
+{ #category : #'as yet unclassified' }
+ForExampleMatcher >> shouldSignalWithMessage [
+	[ 5 should = 6 ] should 
+		signal: AssertionFailure
+		withMessageText: 'Expected 6 but was 5.'
 ]
