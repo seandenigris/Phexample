@@ -13,8 +13,24 @@ ForExampleMatcher >> shouldBeEmpty [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldBeEmpty2 [
+  |set|
+	set := Set new. 
+	set isEmpty should be true.
+	^set
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldBeEven [
   4 should be even
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldBeFalse [
+  |set|
+	set := Set with: 42. 
+	set isEmpty should be false.
+	^set
 ]
 
 { #category : #examples }
@@ -36,13 +52,37 @@ ForExampleMatcher >> shouldIncludeFoo [
 ]
 
 { #category : #examples }
-ForExampleMatcher >> shouldNotBeEven [ 
+ForExampleMatcher >> shouldNotBeEmpty [
+  |set|
+	set := Set new. 
+	set isEmpty should be true.
+	^set
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldNotBeEven [
   5 should not be even
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldNotBeFalse [
+  |set|
+	set := Set new. 
+	set isEmpty should not be false.
+	^set
 ]
 
 { #category : #examples }
 ForExampleMatcher >> shouldNotBeOdd [
   6 should not be odd
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldNotBeTrue [
+  |set|
+	set := Set with: 42. 
+	set isEmpty should not be true.
+	^set
 ]
 
 { #category : #examples }
@@ -76,6 +116,22 @@ ForExampleMatcher >> shouldSignalIfSignalWrong [
 	[ [ self error ] should signal: TestFailure ] should 
 		signal: TestFailure 
 		withMessageText: 'Expected class TestFailure but was Error'
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenFalseIsNotFalse [
+  |set|
+	set := Set with: 42. 
+	[ set isEmpty should not be false ] should signal: TestFailure.
+	^set
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenTrueIsNotTrue [
+  |set|
+	set := Set new. 
+	[ set isEmpty should not be true ] should signal: TestFailure.
+	^set
 ]
 
 { #category : #examples }

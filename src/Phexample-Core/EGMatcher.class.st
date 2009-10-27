@@ -61,6 +61,13 @@ EGMatcher >> doesNotUnderstand: aMessage [
 	
 ]
 
+{ #category : #testing }
+EGMatcher >> false [
+	state = #(be) ifTrue: [ state := #(). ^self = false ].
+	state = #(not be) ifTrue: [ state := #(). ^self ~= false ].
+	Error signal: 'Illegal state ', state asString
+]
+
 { #category : #private }
 EGMatcher >> initialize [ 
  state := #()
@@ -98,6 +105,13 @@ EGMatcher >> signal: errorClass withMessageText: aString [
 		ex should beKindOf: errorClass.
 		^ex messageText should = aString ].
 	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
+]
+
+{ #category : #testing }
+EGMatcher >> true [
+	state = #(be) ifTrue: [ state := #(). ^self = true ].
+	state = #(not be) ifTrue: [ state := #(). ^self ~= true ].
+	Error signal: 'Illegal state ', state asString
 ]
 
 { #category : #testing }
