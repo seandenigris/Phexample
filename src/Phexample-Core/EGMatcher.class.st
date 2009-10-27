@@ -25,6 +25,14 @@ EGMatcher >> = expected [
 ]
 
 { #category : #testing }
+EGMatcher >> > expected [
+	state = #() ifTrue: [ 
+		^self privateAssert: value > expected
+		ifError: [ 'Expected larger than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
+	Error signal: 'Illegal state: ', state asString
+]
+
+{ #category : #testing }
 EGMatcher >> be [
 	state := state copyWith: #be
 ]

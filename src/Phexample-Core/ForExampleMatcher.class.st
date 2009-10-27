@@ -44,11 +44,24 @@ ForExampleMatcher >> shouldEqualFive [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldHaveTestsInThisClass [
+	self class allTestSelectors should not be isEmpty.
+	self class allTestSelectors size should > 20.
+	
+	
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldIncludeFoo [
   |set|
 	set := #(foo bar qux). 
 	set should be includes: #foo.
 	^set
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldLargerThan [
+  6 should > 5 
 ]
 
 { #category : #examples }
@@ -91,6 +104,13 @@ ForExampleMatcher >> shouldNotEqualSeven [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldNotHaveTestsInEGExample [
+	EGExample allTestSelectors should be isEmpty.
+	
+	
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldSignal [
 
 	[ 5 should = 6 ] should signal: TestFailure.
@@ -124,6 +144,11 @@ ForExampleMatcher >> shouldSignalWhenFalseIsNotFalse [
 	set := Set with: 42. 
 	[ set isEmpty should not be false ] should signal: TestFailure.
 	^set
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenLargerThanFails [
+  [ 5 should > 6 ] should signal: TestFailure.  
 ]
 
 { #category : #examples }
