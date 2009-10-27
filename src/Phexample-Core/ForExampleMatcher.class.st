@@ -44,6 +44,11 @@ ForExampleMatcher >> shouldEqualFive [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldGreaterThan [
+  6 should > 5 
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldHaveTestsInThisClass [
 	self class allTestSelectors should not be isEmpty.
 	self class allTestSelectors size should > 20.
@@ -60,8 +65,8 @@ ForExampleMatcher >> shouldIncludeFoo [
 ]
 
 { #category : #examples }
-ForExampleMatcher >> shouldLargerThan [
-  6 should > 5 
+ForExampleMatcher >> shouldLesserThan [
+  5 should < 6
 ]
 
 { #category : #examples }
@@ -147,8 +152,15 @@ ForExampleMatcher >> shouldSignalWhenFalseIsNotFalse [
 ]
 
 { #category : #examples }
-ForExampleMatcher >> shouldSignalWhenLargerThanFails [
-  [ 5 should > 6 ] should signal: TestFailure.  
+ForExampleMatcher >> shouldSignalWhenGreaterThanFails [
+  [ 5 should > 6 ] should signal: TestFailure withMessageText: 'Expected greater than 6 but was 5'.
+  [ 4 should > 4 ] should signal: TestFailure withMessageText: 'Expected greater than 4 but was 4'.
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenLesserThanFails [
+  [ 6 should < 5 ] should signal: TestFailure withMessageText: 'Expected lesser than 5 but was 6'.
+  [ 4 should < 4 ] should signal: TestFailure withMessageText: 'Expected lesser than 4 but was 4'.
 ]
 
 { #category : #examples }

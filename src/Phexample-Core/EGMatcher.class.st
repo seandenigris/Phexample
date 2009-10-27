@@ -14,6 +14,17 @@ EGMatcher class >> with: anObject [
 ]
 
 { #category : #testing }
+EGMatcher >> < expected [
+	state = #(not) ifTrue: [ 
+		^self privateAssert: (value < expected) not
+		ifError: [ 'Did not expect lesser than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
+	state = #() ifTrue: [ 
+		^self privateAssert: value < expected
+		ifError: [ 'Expected lesser than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
+	Error signal: 'Illegal state: ', state asString
+]
+
+{ #category : #testing }
 EGMatcher >> = expected [
 	state = #(not) ifTrue: [ 
 		^self privateAssert: value ~= expected
@@ -26,9 +37,12 @@ EGMatcher >> = expected [
 
 { #category : #testing }
 EGMatcher >> > expected [
+	state = #(not) ifTrue: [ 
+		^self privateAssert: (value > expected) not
+		ifError: [ 'Did not expect greater than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
 	state = #() ifTrue: [ 
 		^self privateAssert: value > expected
-		ifError: [ 'Expected larger than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
+		ifError: [ 'Expected greater than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
 	Error signal: 'Illegal state: ', state asString
 ]
 
