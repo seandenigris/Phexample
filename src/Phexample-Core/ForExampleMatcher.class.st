@@ -1,10 +1,10 @@
 Class {
 	#name : #ForExampleMatcher,
-	#superclass : #TestExample,
+	#superclass : #EGExample,
 	#category : #'Phexample-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldBeEmpty [
   |set|
 	set := Set new. 
@@ -12,22 +12,22 @@ ForExampleMatcher >> shouldBeEmpty [
 	^set
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldBeEven [
   4 should be even
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldBeOdd [
   5 should be odd
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldEqualFive [
 	(2 + 3) should = 5
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldIncludeFoo [
   |set|
 	set := #(foo bar qux). 
@@ -35,26 +35,45 @@ ForExampleMatcher >> shouldIncludeFoo [
 	^set
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
+ForExampleMatcher >> shouldNotBeEven [ 
+  5 should not be even
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldNotBeOdd [
+  6 should not be odd
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldNotEqualSeven [
 	(2 + 3) should not = 7
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldSignal [
 
-	[ 5 should = 6 ] should signal: AssertionFailure.
+	[ 5 should = 6 ] should signal: TestFailure.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 ForExampleMatcher >> shouldSignalIfFiveShouldNotEqualFive [
 
-	[ 5 should not = 5 ] should signal: AssertionFailure.
+	[ 5 should not = 5 ] should signal: TestFailure.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalIfSignalMissing [
+
+	[ [ 5 should = 5 ] should signal: TestFailure ] should 
+		signal: TestFailure 
+		withMessageText: 'Should raise TestFailure but was none'
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldSignalWithMessage [
+	
 	[ 5 should = 6 ] should 
-		signal: AssertionFailure
-		withMessageText: 'Expected 6 but was 5.'
+		signal: TestFailure
+		withMessageText: 'Expected 6 but was 5'
 ]
