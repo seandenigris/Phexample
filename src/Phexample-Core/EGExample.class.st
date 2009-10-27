@@ -1,11 +1,17 @@
+"
+Phexample, because well designed tests expand on one another.
+
+Examples see ForExampleStack.
+
+by Adrian Kuhn and Niko Schwarz  
+"
 Class {
 	#name : #EGExample,
 	#superclass : #TestCase,
 	#instVars : [
-		'shouldNotPass',
-		'cache'
+		'shouldNotPass'
 	],
-	#category : #'PhExample-Core'
+	#category : #'Phexample-Core'
 }
 
 { #category : #accessing }
@@ -27,39 +33,14 @@ EGExample >> cleanUpInstanceVariables [
 ]
 
 { #category : #dependencies }
-EGExample >> given: anExampleName [ 
-	|cached|
-	cache
-		at: anExampleName
-		ifAbsent: [|result| result := ( [self perform: anExampleName]
-				on: Exception
-				do: [:ex | 
-					shouldNotPass := true.
-					cache at: anExampleName put: cache.
-					ex signal]).
-				cache at: anExampleName put: result.
-				^ result clone
-				].
-	cached := cache at: anExampleName.
-	cached == cache ifTrue: [shouldNotPass := true. self error: 'Producer failed!'].
-	^ cached clone.
-	
-]
-
-{ #category : #private }
-EGExample >> setUp [
-	super setUp.
-	cache := Dictionary new.
+EGExample >> given: anExampleName [	
+	^[ self perform: anExampleName ] on: Exception do: [ :ex | 
+		shouldNotPass := true.
+		ex signal ]
 ]
 
 { #category : #private }
 EGExample >> shouldPass [
 	
 	^super shouldPass and: [ (shouldNotPass = true) not ]
-]
-
-{ #category : #private }
-EGExample >> tearDown [
-	super tearDown.
-	cache := nil.
 ]

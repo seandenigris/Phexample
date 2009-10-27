@@ -1,7 +1,7 @@
 Class {
 	#name : #ForExampleMatcher,
 	#superclass : #EGExample,
-	#category : #'PhExample-Core'
+	#category : #'Phexample-Core'
 }
 
 { #category : #examples }

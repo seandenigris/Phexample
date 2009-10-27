@@ -1,1 +1,1 @@
-Package { #name : #'PhExample-Core' }
+Package { #name : #'Phexample-Core' }
