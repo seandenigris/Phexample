@@ -178,3 +178,15 @@ ForExampleMatcher >> shouldSignalWithMessage [
 		signal: TestFailure
 		withMessageText: 'Expected 6 but was 5'
 ]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWithMessageBlock [
+	
+	[ 5 should = 6 ] should 
+		signal: TestFailure
+		withMessageText: [ :m | 
+			m should beKindOf: String.
+			m isEmpty should not be true.
+			m should = 'Expected 6 but was 5'.
+		]
+]
