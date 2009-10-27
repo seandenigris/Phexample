@@ -6,11 +6,11 @@ Class {
 
 { #category : #examples }
 ForExampleStack >> shouldBeEmpty [
-	|ary|
-	ary := Stack new.
-	ary should be isEmpty.
-	ary size should = 0.
-	^ary
+	| stack |
+	stack := Stack new.
+	stack should be isEmpty.
+	stack size should = 0.
+	^ stack
 ]
 
 { #category : #examples }
@@ -18,6 +18,16 @@ ForExampleStack >> shouldFailWhenPopEmpty [
 	| stack |
 	stack := self given: #shouldBeEmpty.
 	[ stack pop ] should signal: Error withMessageText: 'this stack is empty'.
+]
+
+{ #category : #examples }
+ForExampleStack >> shouldLastInFirstOut [
+	| stack |
+	stack := self given: #shouldPushMoreElements.
+	stack pop should = 13.
+	stack pop should = 7.
+	stack pop should = 42.
+	stack should be isEmpty.
 ]
 
 { #category : #examples }
@@ -37,5 +47,18 @@ ForExampleStack >> shouldPushElement [
 	stack should not be isEmpty.
 	stack size should = 1.
 	stack top should = 42.
+	"self fail."
 	^ stack
+]
+
+{ #category : #examples }
+ForExampleStack >> shouldPushMoreElements [
+	| stack |
+	stack := self given: #shouldPushElement.
+	stack push: 7.
+	stack push: 13.
+	stack should not be isEmpty.
+	stack size should = 3.
+	stack top should = 13.
+	^stack
 ]

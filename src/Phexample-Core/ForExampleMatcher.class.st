@@ -71,6 +71,14 @@ ForExampleMatcher >> shouldSignalIfSignalMissing [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldSignalIfSignalWrong [
+
+	[ [ self error ] should signal: TestFailure ] should 
+		signal: TestFailure 
+		withMessageText: 'Expected class TestFailure but was Error'
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldSignalWithMessage [
 	
 	[ 5 should = 6 ] should 

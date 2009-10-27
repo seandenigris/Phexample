@@ -86,15 +86,17 @@ EGMatcher >> setValue: anObject [
 { #category : #testing }
 EGMatcher >> signal: errorClass [ 
 	
-	[ value value ] on: errorClass do: [ ^nil ].
+	[ value value ] on: Exception do: [ :ex |
+		^ex should beKindOf: errorClass ].
 	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
 ]
 
 { #category : #testing }
 EGMatcher >> signal: errorClass withMessageText: aString [ 
 
-	[ value value ] on: errorClass do: [ :error | 
-		^error messageText should = aString ].
+	[ value value ] on: Exception do: [ :ex | 
+		ex should beKindOf: errorClass.
+		^ex messageText should = aString ].
 	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
 ]
 
