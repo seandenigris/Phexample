@@ -38,18 +38,6 @@ EGMatcher >> beKindOf: aClass [
 ]
 
 { #category : #private }
-EGMatcher >> comparingStringBetween: expected and: actual [
-	^String streamContents: [:stream |
-		stream
-			nextPutAll: 'Expected ';
-			nextPutAll: (expected printStringLimitedTo: 10);
-			nextPutAll: ' but was ';
-			nextPutAll: (actual printStringLimitedTo: 10);
-			nextPutAll: '.'
-		]
-]
-
-{ #category : #private }
 EGMatcher >> doesNotUnderstand: aMessage [
   state = #(be) ifTrue: [
 		TestCase new assert: (aMessage sendTo: value) equals: true.
