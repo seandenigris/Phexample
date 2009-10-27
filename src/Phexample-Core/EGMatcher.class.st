@@ -5,7 +5,7 @@ Class {
 		'value',
 		'state'
 	],
-	#category : #'Phexample-Core'
+	#category : #'PhExample-Core'
 }
 
 { #category : #creation }
