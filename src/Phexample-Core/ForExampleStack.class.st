@@ -47,7 +47,6 @@ ForExampleStack >> shouldPushElement [
 	stack should not be isEmpty.
 	stack size should = 1.
 	stack top should = 42.
-	"self fail."
 	^ stack
 ]
 
