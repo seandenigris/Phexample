@@ -70,6 +70,11 @@ ForExampleMatcher >> shouldLesserThan [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldMatchRegex [
+	'aaa' should match: 'a*'.
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldNotBeEmpty [
   |set|
 	set := Set new. 
@@ -116,6 +121,17 @@ ForExampleMatcher >> shouldNotHaveTestsInEGExample [
 ]
 
 { #category : #examples }
+ForExampleMatcher >> shouldNotMatchRegex [
+	'aaa' should not match: 'ba*'.
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldReturnNilWhenTesting [
+	(5 should = 5) isNil should be true
+
+]
+
+{ #category : #examples }
 ForExampleMatcher >> shouldSignal [
 
 	[ 5 should = 6 ] should signal: TestFailure.
@@ -153,14 +169,28 @@ ForExampleMatcher >> shouldSignalWhenFalseIsNotFalse [
 
 { #category : #examples }
 ForExampleMatcher >> shouldSignalWhenGreaterThanFails [
-  [ 5 should > 6 ] should signal: TestFailure withMessageText: 'Expected greater than 6 but was 5'.
-  [ 4 should > 4 ] should signal: TestFailure withMessageText: 'Expected greater than 4 but was 4'.
+  [ 5 should > 6 ] should signal: TestFailure withMessageText: 'expected 6 but was 5 (using >)'.
+  [ 4 should > 4 ] should signal: TestFailure withMessageText: 'expected 4 but was 4 (using >)'.
 ]
 
 { #category : #examples }
 ForExampleMatcher >> shouldSignalWhenLesserThanFails [
-  [ 6 should < 5 ] should signal: TestFailure withMessageText: 'Expected lesser than 5 but was 6'.
-  [ 4 should < 4 ] should signal: TestFailure withMessageText: 'Expected lesser than 4 but was 4'.
+  [ 6 should < 5 ] should signal: TestFailure withMessageText: 'expected 5 but was 6 (using <)'.
+  [ 4 should < 4 ] should signal: TestFailure withMessageText: 'expected 4 but was 4 (using <)'.
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenMatchRegexFails [
+	[ 'aaa' should match: 'ba*' ] should 
+		signal: TestFailure 
+		withMessageText: 'expected ''ba*'' but was ''aaa'' (using regex match)'
+]
+
+{ #category : #examples }
+ForExampleMatcher >> shouldSignalWhenNotMatchRegexFails [
+	[ 'aaa' should not match: 'a*' ] should 
+		signal: TestFailure 
+		withMessageText: 'did not expect ''a*'' but was ''aaa'' (using negated regex match)'
 ]
 
 { #category : #examples }
@@ -176,7 +206,7 @@ ForExampleMatcher >> shouldSignalWithMessage [
 	
 	[ 5 should = 6 ] should 
 		signal: TestFailure
-		withMessageText: 'Expected 6 but was 5'
+		withMessageText: 'expected 6 but was 5 (using =)'
 ]
 
 { #category : #examples }
@@ -187,6 +217,6 @@ ForExampleMatcher >> shouldSignalWithMessageBlock [
 		withMessageText: [ :m | 
 			m should beKindOf: String.
 			m isEmpty should not be true.
-			m should = 'Expected 6 but was 5'.
+			m should = 'expected 6 but was 5 (using =)'.
 		]
 ]

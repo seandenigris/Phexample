@@ -15,35 +15,27 @@ EGMatcher class >> with: anObject [
 
 { #category : #testing }
 EGMatcher >> < expected [
-	state = #(not) ifTrue: [ 
-		^self privateAssert: (value < expected) not
-		ifError: [ 'Did not expect lesser than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	state = #() ifTrue: [ 
-		^self privateAssert: value < expected
-		ifError: [ 'Expected lesser than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	Error signal: 'Illegal state: ', state asString
+	^self expect: expected using: #<
+]
+
+{ #category : #testing }
+EGMatcher >> <= expected [
+	^self expect: expected using: #<=
 ]
 
 { #category : #testing }
 EGMatcher >> = expected [
-	state = #(not) ifTrue: [ 
-		^self privateAssert: value ~= expected
-		ifError: [ 'Did not expect <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	state = #() ifTrue: [ 
-		^self privateAssert: value = expected
-		ifError: [ 'Expected <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	Error signal: 'Illegal state: ', state asString
+	^self expect: expected using: #=
 ]
 
 { #category : #testing }
 EGMatcher >> > expected [
-	state = #(not) ifTrue: [ 
-		^self privateAssert: (value > expected) not
-		ifError: [ 'Did not expect greater than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	state = #() ifTrue: [ 
-		^self privateAssert: value > expected
-		ifError: [ 'Expected greater than <1p> but was <2p>' expandMacrosWith: expected with: value ]].
-	Error signal: 'Illegal state: ', state asString
+	^self expect: expected using: #>
+]
+
+{ #category : #testing }
+EGMatcher >> >= expected [
+	^self expect: expected using: #>=
 ]
 
 { #category : #testing }
@@ -71,6 +63,33 @@ EGMatcher >> doesNotUnderstand: aMessage [
 	
 ]
 
+{ #category : #private }
+EGMatcher >> expect: expected using: aSelector [ 
+	^self 
+		expect: expected 
+		usingBlock: [ :a :b | a perform: aSelector with: b ] 
+		description: aSelector 
+	
+]
+
+{ #category : #private }
+EGMatcher >> expect: expected usingBlock: aComparison description: aString [  
+	(aComparison value: value value: expected)
+		ifTrue: [state = #(#not )
+				ifTrue: [TestFailure
+						signal: ('did not expect <1p> but was <2p> (using negated <3s>)'
+								expandMacrosWith: expected
+								with: value
+								with: aString)]]
+		ifFalse: [state = #()
+				ifTrue: [TestFailure
+						signal: ('expected <1p> but was <2p> (using <3s>)'
+								expandMacrosWith: expected
+								with: value
+								with: aString)]].
+	^nil
+]
+
 { #category : #testing }
 EGMatcher >> false [
 	state = #(be) ifTrue: [ state := #(). ^self = false ].
@@ -81,6 +100,14 @@ EGMatcher >> false [
 { #category : #private }
 EGMatcher >> initialize [ 
  state := #()
+]
+
+{ #category : #testing }
+EGMatcher >> match: regexString [
+	^self 
+		expect: regexString 
+		usingBlock: [ :a :b | a matchesRegex: regexString ] 
+		description: 'regex match' 
 ]
 
 { #category : #testing }
@@ -128,5 +155,5 @@ EGMatcher >> true [
 
 { #category : #testing }
 EGMatcher >> ~= expected [
-	self not; = expected
+	^self expect: expected using: #~=
 ]
