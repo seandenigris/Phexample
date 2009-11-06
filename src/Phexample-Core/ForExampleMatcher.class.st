@@ -1,6 +1,6 @@
 Class {
 	#name : #ForExampleMatcher,
-	#superclass : #EGExample,
+	#superclass : #Phexample,
 	#category : #'Phexample-Core'
 }
 
