@@ -1,6 +1,6 @@
 Class {
 	#name : #ForExampleStack,
-	#superclass : #Phexample,
+	#superclass : #EGExample,
 	#category : #'Phexample-Core'
 }
 
