@@ -1,7 +1,7 @@
 Class {
 	#name : #ForExampleMatcher,
 	#superclass : #Phexample,
-	#category : #'Phexample-Core'
+	#category : #'Phexample-Test'
 }
 
 { #category : #'examples-expecting-boolean' }

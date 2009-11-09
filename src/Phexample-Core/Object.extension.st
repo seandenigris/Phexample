@@ -1,6 +1,6 @@
 Extension { #name : #Object }
 
-{ #category : #'*Phexample-Core' }
+{ #category : #'*phexample-core' }
 Object >> should [
 	^PhexMatcher with: self
 ]
