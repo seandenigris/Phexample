@@ -10,7 +10,7 @@ Class {
 
 { #category : #documentation }
 PhexMatcher class >> rewriteRules [
-	^ParseTreeRewriter new
+	^RBParseTreeRewriter new
 		replace: 'self assert: [ `@expression ]' with: 'self assert: `@expression';
 		replace: 'self deny: `@expression' with: 'self assert: `@expression not';
 		replace: 'self assert: `@value = `@expected' with: '`@value should = `@expected';

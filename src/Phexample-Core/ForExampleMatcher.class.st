@@ -130,7 +130,7 @@ ForExampleMatcher >> shouldNotBeFalse [
 ]
 
 { #category : #'examples-expecting-reflection' }
-ForExampleMatcher >> shouldNotBeKindOfSublass [
+ForExampleMatcher >> shouldNotBeKindOfSubclass [
 	'hello' should not beKindOf: Symbol
 ]
 
