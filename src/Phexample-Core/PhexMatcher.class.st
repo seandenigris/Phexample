@@ -13,84 +13,116 @@ PhexMatcher class >> with: anObject [
 	^ self new setValue: anObject
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> < expected [
 	^self expect: expected using: #<
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> <= expected [
 	^self expect: expected using: #<=
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> = expected [
 	^self expect: expected using: #=
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> > expected [
 	^self expect: expected using: #>
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> >= expected [
 	^self expect: expected using: #>=
 ]
 
-{ #category : #testing }
+{ #category : #'expecting-boolean' }
 PhexMatcher >> be [
 	state := state copyWith: #be
 ]
 
-{ #category : #testing }
-PhexMatcher >> beKindOf: aClass [
+{ #category : #'expecting-reflection' }
+PhexMatcher >> beKindOf: expectedClass [ 
+	^self 
+		expect: [ value isKindOf: expectedClass ]
+		describeShould: 
+			[ 'expected kind of <1p> but got instance of <2p> (using isKindOf)' 
+				expandMacrosWith: expectedClass
+				with: value class ]
+		describeShouldNot: 
+			[ 'expected not to get kind of <1p> but got instance of <2p> (using isKindOf)' 
+				expandMacrosWith: expectedClass
+				with: value class ]
+]
+
+{ #category : #'expecting-string' }
+PhexMatcher >> beginWith: aPrefix [
+	^self expect: aPrefix using: #beginsWith: 
 	
-	self privateAssert: (value isKindOf: aClass) 
-		ifError: [ 'Expected class <1p> but was <2p>' expandMacrosWith: aClass with: value class ]  
-	
+]
+
+{ #category : #'expecting-change' }
+PhexMatcher >> change: aBlock [ 
+	| before after |
+	before := aBlock value.
+	value value.
+	after := aBlock value.
+	before should not = after.	
+]
+
+{ #category : #'expecting-change' }
+PhexMatcher >> change: aBlock from: before to: after [
+	aBlock value should = before.
+	value value.
+	aBlock value should = after.
 ]
 
 { #category : #private }
 PhexMatcher >> doesNotUnderstand: aMessage [
-  state = #(be) ifTrue: [
+	state = #(be) ifTrue: [
 		TestCase new assert: (aMessage sendTo: value) equals: true.
 		^self ].
-  state = #(not be) ifTrue: [
+	state = #(not be) ifTrue: [
 		TestCase new assert: (aMessage sendTo: value) equals: false.
 		^self ].
 	super doesNotUnderstand: aMessage
 	
 ]
 
-{ #category : #private }
-PhexMatcher >> expect: expected using: aSelector [ 
-	^self 
-		expect: expected 
-		usingBlock: [ :a :b | a perform: aSelector with: b ] 
-		description: aSelector 
+{ #category : #'expecting-string' }
+PhexMatcher >> endWith: aSuffix [
+	^self expect: aSuffix using: #endsWith: 
 	
 ]
 
 { #category : #private }
-PhexMatcher >> expect: expected usingBlock: aComparison description: aString [  
-	(aComparison value: value value: expected)
-		ifTrue: [state = #(#not )
-				ifTrue: [TestFailure
-						signal: ('did not expect <1p> but was <2p> (using negated <3s>)'
-								expandMacrosWith: expected
-								with: value
-								with: aString)]]
-		ifFalse: [state = #()
-				ifTrue: [TestFailure
-						signal: ('expected <1p> but was <2p> (using <3s>)'
-								expandMacrosWith: expected
-								with: value
-								with: aString)]].
-	^nil
+PhexMatcher >> expect: aBlock describeShould: shouldBlock describeShouldNot: shouldNotBlock [
+	state = #() ifTrue: [
+		aBlock value ifFalse: [TestFailure signal: shouldBlock value].
+		^nil ].
+	state = #(not) ifTrue: [
+		aBlock value ifTrue: [TestFailure signal: shouldNotBlock value].
+		^nil ].
+	self error: 'illegal state ', state asString
 ]
 
-{ #category : #testing }
+{ #category : #private }
+PhexMatcher >> expect: expected using: aSymbol [
+	^self expect: [ value perform: aSymbol with: expected ]
+  		describeShould: [ ('expected <1p> but got <2p> (using <3s>)'
+								expandMacrosWith: expected
+								with: value
+								with: aSymbol) ]
+  		describeShouldNot: [ ('expected not to get <1p> but got <2p> (using <3s>)'
+								expandMacrosWith: expected
+								with: value
+								with: aSymbol) ]
+
+]
+
+{ #category : #'expecting-boolean' }
 PhexMatcher >> false [
 	state = #(be) ifTrue: [ state := #(). ^self = false ].
 	state = #(not be) ifTrue: [ state := #(). ^self ~= false ].
@@ -102,24 +134,26 @@ PhexMatcher >> initialize [
  state := #()
 ]
 
-{ #category : #testing }
-PhexMatcher >> match: regexString [
-	^self 
-		expect: regexString 
-		usingBlock: [ :a :b | a matchesRegex: regexString ] 
-		description: 'regex match' 
+{ #category : #'expecting-string' }
+PhexMatcher >> matchRegex: regexString [
+	
+	^self expect: regexString using: #matchesRegex:
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> not [
 	state := state copyWith: #not
 ]
 
-{ #category : #private }
-PhexMatcher >> privateAssert: aBoolean ifError: errorMessageBlock [
-
-	aBoolean ifFalse: [ TestFailure signal: errorMessageBlock value ].
-	^nil "cannot return self since we are a proto-object only"
+{ #category : #'expecting-performance' }
+PhexMatcher >> runWithin: aDuration [ 
+	^ self
+		expect: [[value value.
+			true]
+				valueWithin: aDuration
+				onTimeout: [false]]
+		describeShould: ['expected to run within <1p> but took longer' expandMacrosWith: aDuration]
+		describeShouldNot: ['expected to take longer then <1p> but was faster' expandMacrosWith: aDuration]
 ]
 
 { #category : #private }
@@ -127,7 +161,7 @@ PhexMatcher >> setValue: anObject [
 	value := anObject 
 ]
 
-{ #category : #testing }
+{ #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass [ 
 	
 	value on: Exception do: [ :ex |
@@ -135,7 +169,7 @@ PhexMatcher >> signal: errorClass [
 	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
 ]
 
-{ #category : #testing }
+{ #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass withMessageText: message [
 
 	value on: Exception do: [ :ex | 
@@ -146,14 +180,14 @@ PhexMatcher >> signal: errorClass withMessageText: message [
 	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
 ]
 
-{ #category : #testing }
+{ #category : #'expecting-boolean' }
 PhexMatcher >> true [
 	state = #(be) ifTrue: [ state := #(). ^self = true ].
 	state = #(not be) ifTrue: [ state := #(). ^self ~= true ].
 	Error signal: 'Illegal state ', state asString
 ]
 
-{ #category : #testing }
+{ #category : #expecting }
 PhexMatcher >> ~= expected [
 	^self expect: expected using: #~=
 ]
