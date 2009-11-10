@@ -34,6 +34,7 @@ Phexample >> cleanUpInstanceVariables [
 
 { #category : #dependencies }
 Phexample >> given: anExampleName [ 
+	self assert: (self respondsTo: anExampleName ).
 	^ [ self perform: anExampleName ] 
 		on: Exception
 		do: 
