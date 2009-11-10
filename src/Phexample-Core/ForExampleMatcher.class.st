@@ -77,6 +77,13 @@ ForExampleMatcher >> shouldEqualFive [
 	(2 + 3) should = 5
 ]
 
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
+	[self given: #somethingThatReallyDoesntExist12424528235] should signal: TestFailure
+
+
+]
+
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldGreaterThan [
   6 should > 5 
