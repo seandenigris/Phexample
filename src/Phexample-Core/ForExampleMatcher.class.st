@@ -77,9 +77,9 @@ ForExampleMatcher >> shouldEqualFive [
 	(2 + 3) should = 5
 ]
 
-{ #category : #'examples-expecting-error' }
+{ #category : #examples }
 ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
-	[self given: #somethingThatReallyDoesntExist12424528235] should signal: TestFailure
+	[self given: #zork] should signal: TestFailure
 
 
 ]
@@ -169,6 +169,16 @@ ForExampleMatcher >> shouldNotHaveTestsInEGExample [
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldNotMatchRegex [
 	'aaa' should not matchRegex: 'ba*'.
+]
+
+{ #category : #'examples-expecting-reflection' }
+ForExampleMatcher >> shouldNotRespondTo [
+	Object new should not respondTo: #zork
+]
+
+{ #category : #'examples-expecting-reflection' }
+ForExampleMatcher >> shouldRespondTo [
+	Object new should respondTo: #yourself
 ]
 
 { #category : #examples }
