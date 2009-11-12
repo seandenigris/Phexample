@@ -273,6 +273,20 @@ ForExampleMatcher >> shouldSignalWhenNotMatchRegexFails [
 		withMessageText: 'expected not to get ''a*'' but got ''aaa'' (using matchesRegex:)'
 ]
 
+{ #category : #'examples-expecting-reflection' }
+ForExampleMatcher >> shouldSignalWhenNotRespondToFails [
+	[ Object new should not respondTo: #yourself ] should
+		signal: TestFailure
+		withMessageText: 'expected an Object not to respond to #yourself (using respondsTo:)' 
+]
+
+{ #category : #'examples-expecting-reflection' }
+ForExampleMatcher >> shouldSignalWhenRespondToFails [
+	[ Object new should respondTo: #zork ] should
+		signal: TestFailure
+		withMessageText: 'expected an Object to respond to #zork (using respondsTo:)' 
+]
+
 { #category : #'examples-expecting-performance' }
 ForExampleMatcher >> shouldSignalWhenRunWithinFails [
 	[ [ (Delay forMilliseconds: 20) wait ] should runWithin: 10 milliSeconds ] should signal: TestFailure

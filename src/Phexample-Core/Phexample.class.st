@@ -34,11 +34,10 @@ Phexample >> cleanUpInstanceVariables [
 
 { #category : #dependencies }
 Phexample >> given: anExampleName [ 
-	self assert: (self respondsTo: anExampleName ).
+	self should respondTo: anExampleName.
 	^ [ self perform: anExampleName ] 
 		on: Exception
-		do: 
-			[ :ex | 
+		do: [ :ex | 
 			givenNotGiven := true.
 			ex signal ]
 ]
