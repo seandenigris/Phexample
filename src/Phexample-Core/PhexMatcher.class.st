@@ -50,7 +50,10 @@ PhexMatcher >> <= expected [
 
 { #category : #expecting }
 PhexMatcher >> = expected [
-	^self expect: expected using: #=
+	self expect: expected using: #=.
+	self isShould ifTrue: [ self expectSameHash: expected ].
+	^nil
+	
 ]
 
 { #category : #expecting }
@@ -124,10 +127,10 @@ PhexMatcher >> endWith: aSuffix [
 
 { #category : #private }
 PhexMatcher >> expect: aBlock describeShould: shouldBlock describeShouldNot: shouldNotBlock [
-	state = #() ifTrue: [
+	self isShould ifTrue: [
 		aBlock value ifFalse: [TestFailure signal: shouldBlock value].
 		^nil ].
-	state = #(not) ifTrue: [
+	self isShouldNot ifTrue: [
 		aBlock value ifTrue: [TestFailure signal: shouldNotBlock value].
 		^nil ].
 	self error: 'illegal state ', state asString
@@ -147,6 +150,15 @@ PhexMatcher >> expect: expected using: aSymbol [
 
 ]
 
+{ #category : #private }
+PhexMatcher >> expectSameHash: expected [
+	value hash = expected hash ifFalse: [
+		TestFailure signal: ('Expected same hash value for <1p> and <2p> (using hash implied by =)'
+			expandMacrosWith: value
+			with: expected) ].
+	^nil
+]
+
 { #category : #'expecting-boolean' }
 PhexMatcher >> false [
 	state = #(be) ifTrue: [ state := #(). ^self = false ].
@@ -157,6 +169,16 @@ PhexMatcher >> false [
 { #category : #private }
 PhexMatcher >> initialize [ 
  state := #()
+]
+
+{ #category : #private }
+PhexMatcher >> isShould [
+	^state = #()
+]
+
+{ #category : #private }
+PhexMatcher >> isShouldNot [
+	^state = #(not)
 ]
 
 { #category : #'expecting-string' }
@@ -228,5 +250,9 @@ PhexMatcher >> true [
 
 { #category : #expecting }
 PhexMatcher >> ~= expected [
-	^self expect: expected using: #~=
+	self expect: expected using: #~=.
+	self isShouldNot ifTrue: [ self expectSameHash: expected ].
+	^nil
+	
+	
 ]
