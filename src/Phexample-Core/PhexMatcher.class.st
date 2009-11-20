@@ -153,7 +153,7 @@ PhexMatcher >> expect: expected using: aSymbol [
 { #category : #private }
 PhexMatcher >> expectSameHash: expected [
 	value hash = expected hash ifFalse: [
-		TestFailure signal: ('Expected same hash value for <1p> and <2p> (using hash implied by =)'
+		TestFailure signal: ('Expected same hash for <1p> and <2p> (using hash implied by =)'
 			expandMacrosWith: value
 			with: expected) ].
 	^nil
