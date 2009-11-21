@@ -84,6 +84,11 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 
 ]
 
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldFindOriginalSend [
+	[Stack new isEmpty should not be true] should signal: TestFailure withMessageText: 'expected isEmpty to return false but got true'
+]
+
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldGreaterThan [
   6 should > 5 
@@ -113,6 +118,11 @@ ForExampleMatcher >> shouldLesserThan [
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldMatchRegex [
 	'aaa' should matchRegex: 'a*'.
+]
+
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldNameFailedProperty [
+	[Stack new should not be isEmpty] should signal: TestFailure withMessageText: 'expected isEmpty to return false but got true'
 ]
 
 { #category : #'examples-expecting-boolean' }

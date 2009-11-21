@@ -1,3 +1,19 @@
+"
+A PhexMatcher is the sort of thing that works out if your example behaves properly or not. Most of the magic happens in expect:using:. 
+
+Please notice that = works unlike in most classes. Therefore, do not store me in a collection!
+
+Instance Variables
+	state:		the items matched so far
+	value:		
+
+state
+	- xxxxx
+
+value
+	- xxxxx
+
+"
 Class {
 	#name : #PhexMatcher,
 	#superclass : #Object,
@@ -109,14 +125,13 @@ PhexMatcher >> change: aBlock from: before to: after [
 
 { #category : #private }
 PhexMatcher >> doesNotUnderstand: aMessage [
-	state = #(be) ifTrue: [
-		TestCase new assert: (aMessage sendTo: value) equals: true.
-		^self ].
-	state = #(not be) ifTrue: [
-		TestCase new assert: (aMessage sendTo: value) equals: false.
-		^self ].
-	super doesNotUnderstand: aMessage
+	|expected|
+	state = #(be) ifTrue: [expected := true].
+	state = #(not be) ifTrue: [expected := false ].
 	
+	expected ifNil: [super doesNotUnderstand: aMessage].
+	
+	 ^ self expectMessage: aMessage result: (aMessage sendTo: value) toReturn: expected .
 ]
 
 { #category : #'expecting-string' }
@@ -150,6 +165,25 @@ PhexMatcher >> expect: expected using: aSymbol [
 
 ]
 
+{ #category : #'expecting-boolean' }
+PhexMatcher >> expectBoolean: aBoolean [
+	aBoolean halt.
+]
+
+{ #category : #private }
+PhexMatcher >> expectMessage: aMessage result: actual toReturn: expected [
+	actual = expected ifTrue: [^ self].
+	
+	TestFailure signal: (String streamContents: [:s| 
+		s nextPutAll: 'expected ' ;
+		  nextPutAll: aMessage asString ;
+		  nextPutAll: ' to return ' ;
+		  nextPutAll: expected asString;
+		  nextPutAll: ' but got ' ; 
+		  nextPutAll: actual asString]  )
+		
+]
+
 { #category : #private }
 PhexMatcher >> expectSameHash: expected [
 	value hash = expected hash ifFalse: [
@@ -159,11 +193,27 @@ PhexMatcher >> expectSameHash: expected [
 	^nil
 ]
 
+{ #category : #private }
+PhexMatcher >> expectedUnknownMessageToReturn: expected [ 
+	|actual sender message |
+	actual := value.
+	actual = expected ifTrue: [^ self].
+	sender := thisContext sender sender.
+	message := sender method messageSendBeforeLastShouldCurrentPc: sender pc.
+	^ self expectMessage: message result: actual toReturn: expected.
+	
+]
+
 { #category : #'expecting-boolean' }
 PhexMatcher >> false [
-	state = #(be) ifTrue: [ state := #(). ^self = false ].
-	state = #(not be) ifTrue: [ state := #(). ^self ~= false ].
+	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: false].
+	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: true ]."XXX negate"
 	Error signal: 'Illegal state ', state asString
+]
+
+{ #category : #private }
+PhexMatcher >> hash [
+	self error: 'Don''t put a matcher into a dictionary. It does not behave ordinarily on ='
 ]
 
 { #category : #private }
@@ -243,8 +293,8 @@ PhexMatcher >> signal: errorClass withMessageText: message [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> true [
-	state = #(be) ifTrue: [ state := #(). ^self = true ].
-	state = #(not be) ifTrue: [ state := #(). ^self ~= true ].
+	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: true].
+	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: false ]."XXX negate"
 	Error signal: 'Illegal state ', state asString
 ]
 
