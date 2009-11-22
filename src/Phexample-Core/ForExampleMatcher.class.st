@@ -84,10 +84,10 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 
 ]
 
-{ #category : #'examples-expecting-error' }
+{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldFindOriginalSend [
 	[Stack new isEmpty should not be true] should 
-		signal: TestFailure withMessageText: 'expected isEmpty to return false but got true'
+		signal: TestFailure withMessageText: 'expected #isEmpty to return false but got true'
 ]
 
 { #category : #'examples-expecting' }
@@ -121,10 +121,10 @@ ForExampleMatcher >> shouldMatchRegex [
 	'aaa' should matchRegex: 'a*'.
 ]
 
-{ #category : #'examples-expecting-error' }
+{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldNameFailedProperty [
 	[Stack new should not be isEmpty] should 
-		signal: TestFailure withMessageText: 'expected isEmpty to return false but got true'
+		signal: TestFailure withMessageText: 'expected #isEmpty to return false but got true'
 ]
 
 { #category : #'examples-expecting-boolean' }

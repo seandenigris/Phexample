@@ -39,7 +39,7 @@ Phexample >> given: anExampleName [
 		on: Exception
 		do: [ :ex | 
 			givenNotGiven := true.
-			ex signal ]
+			ex pass ]
 ]
 
 { #category : #private }

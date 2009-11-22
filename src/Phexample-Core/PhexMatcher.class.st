@@ -87,6 +87,11 @@ PhexMatcher >> be [
 	state := state copyWith: #be
 ]
 
+{ #category : #'expecting-boolean' }
+PhexMatcher >> beFalse [
+	^self be false
+]
+
 { #category : #'expecting-reflection' }
 PhexMatcher >> beKindOf: expectedClass [ 
 	^self 
@@ -99,6 +104,11 @@ PhexMatcher >> beKindOf: expectedClass [
 			[ 'expected not to get kind of <1p> but got instance of <2p> (using isKindOf)' 
 				expandMacrosWith: expectedClass
 				with: value class ]
+]
+
+{ #category : #'expecting-boolean' }
+PhexMatcher >> beTrue [
+	^self be true
 ]
 
 { #category : #'expecting-string' }
@@ -128,10 +138,8 @@ PhexMatcher >> doesNotUnderstand: aMessage [
 	|expected|
 	state = #(be) ifTrue: [expected := true].
 	state = #(not be) ifTrue: [expected := false ].
-	
 	expected ifNil: [super doesNotUnderstand: aMessage].
-	
-	 ^ self expectMessage: aMessage result: (aMessage sendTo: value) toReturn: expected .
+	^ self expectMessage: aMessage selector result: (aMessage sendTo: value) toReturn: expected .
 ]
 
 { #category : #'expecting-string' }
@@ -165,23 +173,13 @@ PhexMatcher >> expect: expected using: aSymbol [
 
 ]
 
-{ #category : #'expecting-boolean' }
-PhexMatcher >> expectBoolean: aBoolean [
-	aBoolean halt.
-]
-
 { #category : #private }
-PhexMatcher >> expectMessage: aMessage result: actual toReturn: expected [
-	actual = expected ifTrue: [^ self].
-	
-	TestFailure signal: (String streamContents: [:s| 
-		s nextPutAll: 'expected ' ;
-		  nextPutAll: aMessage asString ;
-		  nextPutAll: ' to return ' ;
-		  nextPutAll: expected asString;
-		  nextPutAll: ' but got ' ; 
-		  nextPutAll: actual asString]  )
-		
+PhexMatcher >> expectMessage: aSelector result: actual toReturn: expected [
+	actual = expected ifTrue: [ ^nil ].
+	TestFailure signal: ('expected #<1s> to return <2p> but got <3p>'
+		expandMacrosWith: aSelector
+		with: expected
+		with: actual)
 ]
 
 { #category : #private }
@@ -207,7 +205,7 @@ PhexMatcher >> expectedUnknownMessageToReturn: expected [
 { #category : #'expecting-boolean' }
 PhexMatcher >> false [
 	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: false].
-	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: true ]."XXX negate"
+	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: true ].
 	Error signal: 'Illegal state ', state asString
 ]
 
