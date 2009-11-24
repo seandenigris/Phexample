@@ -88,6 +88,11 @@ ForExampleMatcher >> shouldHaveTestsInThisClass [
 	
 ]
 
+{ #category : #'exanples-expecting-collections' }
+ForExampleMatcher >> shouldInclude [
+	#(foo bar) should include: #foo
+]
+
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldIncludeFoo [
 	(#(foo bar qux) includes: #foo) should beTrue.
@@ -132,6 +137,11 @@ ForExampleMatcher >> shouldNotHaveTestsInEGExample [
 	Phexample allTestSelectors isEmpty should be true.
 	
 	
+]
+
+{ #category : #'exanples-expecting-collections' }
+ForExampleMatcher >> shouldNotInclude [
+	#(foo bar) should not include: #qux
 ]
 
 { #category : #'examples-expecting-string' }
@@ -227,6 +237,11 @@ ForExampleMatcher >> shouldSignalWhenGreaterThanFails [
   [ 4 should > 4 ] should signal: TestFailure withMessageText: 'expected 4 but got 4 (using >)'.
 ]
 
+{ #category : #'exanples-expecting-collections' }
+ForExampleMatcher >> shouldSignalWhenIncludeFails [
+	[ #(foo bar) should include: #qux ] should signal: TestFailure
+]
+
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldSignalWhenLesserThanFails [
   [ 6 should < 5 ] should signal: TestFailure withMessageText: 'expected 5 but got 6 (using <)'.
@@ -252,6 +267,11 @@ ForExampleMatcher >> shouldSignalWhenNotBeTrueFails [
 	[ Set new isEmpty should not beTrue ] should
 		signal: TestFailure
 		withMessageText: 'did not expect #isEmpty to be true'
+]
+
+{ #category : #'exanples-expecting-collections' }
+ForExampleMatcher >> shouldSignalWhenNotIncludeFails [
+	[ #(foo bar) should not include: #foo ] should signal: TestFailure
 ]
 
 { #category : #'examples-expecting-string' }

@@ -216,6 +216,11 @@ PhexMatcher >> hash [
 	self error: 'Don''t put a matcher into a dictionary. It does not behave ordinarily on ='
 ]
 
+{ #category : #'expecting-collections' }
+PhexMatcher >> include: element [
+	self expect: element using: #includes: 
+]
+
 { #category : #private }
 PhexMatcher >> initialize [ 
  state := #()
