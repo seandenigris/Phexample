@@ -5,42 +5,13 @@ Class {
 }
 
 { #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> falseShouldBeFalse [
-	false should be false
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> falseShouldNotNotBeFalse [
-	[false should not be false] should signal: TestFailure 
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldBeEmpty [
-  |set|
-	set := Set new. 
-	set should be isEmpty.
-	^set
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldBeEmpty2 [
-  |set|
-	set := Set new. 
-	set isEmpty should be true.
-	^set
-]
-
-{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeEven [
   4 should be even
 ]
 
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeFalse [
-  |set|
-	set := Set with: 42. 
-	set isEmpty should be false.
-	^set
+  (Set with: 42) isEmpty should beFalse.
 ]
 
 { #category : #'examples-expecting-reflection' }
@@ -56,6 +27,12 @@ ForExampleMatcher >> shouldBeKindOfSuperclass [
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeOdd [
   5 should be odd
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldBeTrue [
+	Set new isEmpty should beTrue.
+
 ]
 
 { #category : #'examples-expecting-string' }
@@ -97,7 +74,7 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldFindOriginalSend [
 	[Stack new isEmpty should not be true] should 
-		signal: TestFailure withMessageText: 'expected #isEmpty not to return true'
+		signal: TestFailure withMessageText: 'did not expect #isEmpty to be true'
 ]
 
 { #category : #'examples-expecting' }
@@ -115,10 +92,8 @@ ForExampleMatcher >> shouldHaveTestsInThisClass [
 
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldIncludeFoo [
-  |set|
-	set := #(foo bar qux). 
-	set should be includes: #foo.
-	^set
+	(#(foo bar qux) includes: #foo) should beTrue.
+
 ]
 
 { #category : #'examples-expecting' }
@@ -135,14 +110,6 @@ ForExampleMatcher >> shouldMatchRegex [
 ForExampleMatcher >> shouldNameFailedProperty [
 	[Stack new should not be isEmpty] should 
 		signal: TestFailure withMessageText: 'expected isEmpty NOT to return true but got true'
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldNotBeEmpty [
-  |set|
-	set := Set new. 
-	set isEmpty should be true.
-	^set
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -170,10 +137,7 @@ ForExampleMatcher >> shouldNotBeOdd [
 
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldNotBeTrue [
-  |set|
-	set := Set with: 42. 
-	set isEmpty should not be true.
-	^set
+  	(Set with: 42) isEmpty should not beTrue.
 ]
 
 { #category : #'examples-expecting' }
@@ -242,9 +206,23 @@ ForExampleMatcher >> shouldSignalIfSignalWrong [
 		"withMessageText: 'Expected class TestFailure but was Error'"
 ]
 
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldSignalWhenBeFalseFails [
+	[ Set new isEmpty should beFalse ] should
+		signal: TestFailure
+		withMessageText: 'expected #isEmpty to be false'
+]
+
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldSignalWhenBeKindOfFails [
 	[ 'hello' should beKindOf: Number ] should signal: TestFailure
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldSignalWhenBeTrueFails [
+	[ (Set with: 42) isEmpty should beTrue ] should
+		signal: TestFailure
+		withMessageText: 'expected #isEmpty to be true'
 ]
 
 { #category : #'examples-expecting-string' }
@@ -259,14 +237,6 @@ ForExampleMatcher >> shouldSignalWhenEndWithFails [
 	[ 'abcdef' should endWith: 'Xdef' ] should 
 		signal: TestFailure 
 		withMessageText: 'expected ''Xdef'' but got ''abcdef'' (using endsWith:)' 
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldSignalWhenFalseIsNotFalse [
-  |set|
-	set := Set with: 42. 
-	[ set isEmpty should not be false ] should signal: TestFailure.
-	^set
 ]
 
 { #category : #'examples-expecting' }
@@ -286,6 +256,20 @@ ForExampleMatcher >> shouldSignalWhenMatchRegexFails [
 	[ 'aaa' should matchRegex: 'ba*' ] should 
 		signal: TestFailure 
 		withMessageText: 'expected ''ba*'' but got ''aaa'' (using matchesRegex:)'
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldSignalWhenNotBeFalseFails [
+	[ (Set with: 42) isEmpty should not beFalse ] should
+		signal: TestFailure
+		withMessageText: 'did not expect #isEmpty to be false'
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldSignalWhenNotBeTrueFails [
+	[ Set new isEmpty should not beTrue ] should
+		signal: TestFailure
+		withMessageText: 'did not expect #isEmpty to be true'
 ]
 
 { #category : #'examples-expecting-string' }
@@ -312,14 +296,6 @@ ForExampleMatcher >> shouldSignalWhenRespondToFails [
 { #category : #'examples-expecting-performance' }
 ForExampleMatcher >> shouldSignalWhenRunWithinFails [
 	[ [ (Delay forMilliseconds: 20) wait ] should runWithin: 10 milliSeconds ] should signal: TestFailure
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldSignalWhenTrueIsNotTrue [
-  |set|
-	set := Set new. 
-	[ set isEmpty should not be true ] should signal: TestFailure.
-	^set
 ]
 
 { #category : #'examples-expecting-error' }
@@ -364,14 +340,4 @@ ForExampleMatcher >> shouldTestForSameHashWhenExpectingEqualValues [
 	factory cleanUp.
 
 
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> trueShouldBeTrue [
-	true should not be true 
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> trueShouldNotNotBeTrue [
-	[true should not be true ] should signal: TestFailure 
 ]

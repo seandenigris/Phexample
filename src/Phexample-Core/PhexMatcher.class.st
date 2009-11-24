@@ -185,12 +185,12 @@ PhexMatcher >> expectedUnknownMessageToReturn: expected [
 	| sender message |
 	state := state copyWithout: #be.
 	^self expect: [ value = expected ]
-		describeShould: [
-			'expected #<1s> to return true' expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage.
-			]
-		describeShouldNot: [
-			'expected #<1s> not to return true' expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage.
-			].
+		describeShould: [ 'expected #<1s> to be <2p>' 
+				expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage
+				with: expected ]
+		describeShouldNot: [ 'did not expect #<1s> to be <2p>' 
+				expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage
+				with: expected ]
 	
 ]
 
