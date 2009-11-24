@@ -135,11 +135,10 @@ PhexMatcher >> change: aBlock from: before to: after [
 
 { #category : #private }
 PhexMatcher >> doesNotUnderstand: aMessage [
-	|expected|
-	state = #(be) ifTrue: [expected := true].
-	state = #(not be) ifTrue: [expected := false ].
-	expected ifNil: [super doesNotUnderstand: aMessage].
-	^ self expectMessage: aMessage selector result: (aMessage sendTo: value) toReturn: expected .
+	(state = #(be) or: [state = #(not be)]) ifFalse: [super doesNotUnderstand: aMessage].
+	"state = #(be) ifTrue: [state:= #()].
+	state = #(not be) ifTrue: [state := #(not)]."
+	^ self message: aMessage expect: [(aMessage sendTo: value) = true] .
 ]
 
 { #category : #'expecting-string' }
@@ -174,15 +173,6 @@ PhexMatcher >> expect: expected using: aSymbol [
 ]
 
 { #category : #private }
-PhexMatcher >> expectMessage: aSelector result: actual toReturn: expected [
-	actual = expected ifTrue: [ ^nil ].
-	TestFailure signal: ('expected #<1s> to return <2p> but got <3p>'
-		expandMacrosWith: aSelector
-		with: expected
-		with: actual)
-]
-
-{ #category : #private }
 PhexMatcher >> expectSameHash: expected [
 	value hash = expected hash ifFalse: [
 		TestFailure signal: ('Expected same hash for <1p> and <2p> (using hash implied by =)'
@@ -195,10 +185,11 @@ PhexMatcher >> expectSameHash: expected [
 PhexMatcher >> expectedUnknownMessageToReturn: expected [ 
 	|actual sender message |
 	actual := value.
-	actual = expected ifTrue: [^ self].
+
 	sender := thisContext sender sender.
 	message := sender method messageSendBeforeLastShouldCurrentPc: sender pc.
-	^ self expectMessage: message result: actual toReturn: expected.
+	message ifNil: [^ self = expected].
+	^ self message: message expect: [actual = expected]
 	
 ]
 
@@ -221,18 +212,28 @@ PhexMatcher >> initialize [
 
 { #category : #private }
 PhexMatcher >> isShould [
-	^state = #()
+	^state = #() or: [state = #(be)]
 ]
 
 { #category : #private }
 PhexMatcher >> isShouldNot [
-	^state = #(not)
+	^state = #(not) or: [state = #(not be)]
 ]
 
 { #category : #'expecting-string' }
 PhexMatcher >> matchRegex: regexString [
 	
 	^self expect: regexString using: #matchesRegex:
+]
+
+{ #category : #private }
+PhexMatcher >> message: aMessage expect: expected [
+	^self expect: expected
+  		describeShould: [ ('expected <1p> to return true but got false'
+								expandMacrosWith: aMessage) ]
+  		describeShouldNot: [ ('expected <1p> NOT to return true but got true'
+								expandMacrosWith: aMessage) ]
+
 ]
 
 { #category : #expecting }
@@ -292,7 +293,7 @@ PhexMatcher >> signal: errorClass withMessageText: message [
 { #category : #'expecting-boolean' }
 PhexMatcher >> true [
 	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: true].
-	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: false ]."XXX negate"
+	state = #(not be) ifTrue: [ state := #(not). ^self  expectedUnknownMessageToReturn: true ].
 	Error signal: 'Illegal state ', state asString
 ]
 

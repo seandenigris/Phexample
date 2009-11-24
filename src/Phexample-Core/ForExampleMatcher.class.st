@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> falseShouldBeFalse [
+	false should be false
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> falseShouldNotNotBeFalse [
+	[false should not be false] should signal: TestFailure 
+]
+
+{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeEmpty [
   |set|
 	set := Set new. 
@@ -87,7 +97,7 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldFindOriginalSend [
 	[Stack new isEmpty should not be true] should 
-		signal: TestFailure withMessageText: 'expected #isEmpty to return false but got true'
+		signal: TestFailure withMessageText: 'expected #isEmpty NOT to return true but got true'
 ]
 
 { #category : #'examples-expecting' }
@@ -124,7 +134,7 @@ ForExampleMatcher >> shouldMatchRegex [
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldNameFailedProperty [
 	[Stack new should not be isEmpty] should 
-		signal: TestFailure withMessageText: 'expected #isEmpty to return false but got true'
+		signal: TestFailure withMessageText: 'expected isEmpty NOT to return true but got true'
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -354,4 +364,14 @@ ForExampleMatcher >> shouldTestForSameHashWhenExpectingEqualValues [
 	factory cleanUp.
 
 
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> trueShouldBeTrue [
+	true should not be true 
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> trueShouldNotNotBeTrue [
+	[true should not be true ] should signal: TestFailure 
 ]

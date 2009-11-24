@@ -12,8 +12,9 @@ CompiledMethod >> messageSendBeforeLastShouldCurrentPc: currentPc [
 	queue := OrderedCollection new.
 	scanner scanFor: [ :bytecode | 
 		| last prelast |
-		scanner pc = currentPc ifTrue: [
-			 ^ queue fourth = #should ifTrue: [queue fifth ] ifFalse: [queue fourth]  ].
+		scanner pc = currentPc ifTrue: [|msg|
+			  msg := queue fourth = #should ifTrue: [queue fifth ] ifFalse: [queue fourth].
+			  ^ msg = scanner ifTrue: [^nil] ifFalse: [msg]  ].
 		queue addFirst: scanner selectorToSendOrSelf.
 		false	"keep scanning" ].
 	^ self error: 'Couldn''t find it.'
