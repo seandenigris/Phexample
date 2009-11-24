@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldBeEven [
-  4 should be even
-]
-
-{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeFalse [
   (Set with: 42) isEmpty should beFalse.
 ]
@@ -22,11 +17,6 @@ ForExampleMatcher >> shouldBeKindOf [
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldBeKindOfSuperclass [
 	'hello' should beKindOf: Collection
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldBeOdd [
-  5 should be odd
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -92,7 +82,7 @@ ForExampleMatcher >> shouldHandlePathologicCaseOfBooleanPropertyWhenFailing [
 
 { #category : #examples }
 ForExampleMatcher >> shouldHaveTestsInThisClass [
-	self class allTestSelectors should not be isEmpty.
+	self class allTestSelectors isEmpty should not be true.
 	self class allTestSelectors size should > 20.
 	
 	
@@ -115,11 +105,6 @@ ForExampleMatcher >> shouldMatchRegex [
 ]
 
 { #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldNotBeEven [
-  5 should not be even
-]
-
-{ #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldNotBeFalse [
   |set|
 	set := Set new. 
@@ -130,11 +115,6 @@ ForExampleMatcher >> shouldNotBeFalse [
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldNotBeKindOfSubclass [
 	'hello' should not beKindOf: Symbol
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldNotBeOdd [
-  6 should not be odd
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -149,7 +129,7 @@ ForExampleMatcher >> shouldNotEqualSeven [
 
 { #category : #examples }
 ForExampleMatcher >> shouldNotHaveTestsInEGExample [
-	Phexample allTestSelectors should be isEmpty.
+	Phexample allTestSelectors isEmpty should be true.
 	
 	
 ]

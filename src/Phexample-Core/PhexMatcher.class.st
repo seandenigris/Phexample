@@ -133,14 +133,6 @@ PhexMatcher >> change: aBlock from: before to: after [
 	aBlock value should = after.
 ]
 
-{ #category : #private }
-PhexMatcher >> doesNotUnderstand: aMessage [
-	state last == #be ifTrue: [
-		 state := state copyWithout: #be.
-		^self message: aMessage expect: [(aMessage sendTo: value) = true]].
-	^super doesNotUnderstand: aMessage
-]
-
 { #category : #'expecting-string' }
 PhexMatcher >> endWith: aSuffix [
 	^self expect: aSuffix using: #endsWith: 
@@ -245,16 +237,6 @@ PhexMatcher >> isShouldNot [
 PhexMatcher >> matchRegex: regexString [
 	
 	^self expect: regexString using: #matchesRegex:
-]
-
-{ #category : #private }
-PhexMatcher >> message: aMessage expect: expected [
-	^self expect: expected
-  		describeShould: [ ('expected <1p> to return true but got false'
-								expandMacrosWith: aMessage) ]
-  		describeShouldNot: [ ('expected <1p> NOT to return true but got true'
-								expandMacrosWith: aMessage) ]
-
 ]
 
 { #category : #expecting }
