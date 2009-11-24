@@ -188,9 +188,7 @@ PhexMatcher >> expectedUnknownMessageToReturn: expected [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> false [
-	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: false].
-	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: false ].
-	Error signal: 'Illegal state ', state asString
+	 ^self expectedUnknownMessageToReturn: false
 ]
 
 { #category : #private }
@@ -225,12 +223,12 @@ PhexMatcher >> initialize [
 
 { #category : #private }
 PhexMatcher >> isShould [
-	^state = #()
+	^state = #() or: [state = #(be)]
 ]
 
 { #category : #private }
 PhexMatcher >> isShouldNot [
-	^state = #(not)
+	^state = #(not) or: [state = #(not be)]
 ]
 
 { #category : #'expecting-string' }
@@ -295,9 +293,7 @@ PhexMatcher >> signal: errorClass withMessageText: message [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> true [
-	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: true].
-	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: true ].
-	Error signal: 'Illegal state ', state asString
+	^self expectedUnknownMessageToReturn: true
 ]
 
 { #category : #expecting }
