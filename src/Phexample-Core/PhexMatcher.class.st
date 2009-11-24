@@ -135,9 +135,10 @@ PhexMatcher >> change: aBlock from: before to: after [
 
 { #category : #private }
 PhexMatcher >> doesNotUnderstand: aMessage [
-	(state = #(be) or: [state = #(not be)]) ifFalse: [super doesNotUnderstand: aMessage].
-	state := state copyWithout: #be.
-	^ self message: aMessage expect: [(aMessage sendTo: value) = true] .
+	state last == #be ifTrue: [
+		 state := state copyWithout: #be.
+		^self message: aMessage expect: [(aMessage sendTo: value) = true]].
+	^super doesNotUnderstand: aMessage
 ]
 
 { #category : #'expecting-string' }
@@ -182,14 +183,13 @@ PhexMatcher >> expectSameHash: expected [
 
 { #category : #private }
 PhexMatcher >> expectedUnknownMessageToReturn: expected [ 
-	| sender message |
 	state := state copyWithout: #be.
 	^self expect: [ value = expected ]
 		describeShould: [ 'expected #<1s> to be <2p>' 
-				expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage
+				expandMacrosWith: self findNameOfUnknownMessage
 				with: expected ]
 		describeShouldNot: [ 'did not expect #<1s> to be <2p>' 
-				expandMacrosWith: self walkStackAndByteCodeToFindNameOfUnknownMessage
+				expandMacrosWith: self findNameOfUnknownMessage
 				with: expected ]
 	
 ]
@@ -199,6 +199,26 @@ PhexMatcher >> false [
 	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: false].
 	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: false ].
 	Error signal: 'Illegal state ', state asString
+]
+
+{ #category : #private }
+PhexMatcher >> findNameOfUnknownMessage [
+	"	1. walk up the stack until we are outside of this instance.
+		2. collect all sent message from bytecode up to program counter.
+		3. drop messages until #should and return previous. "
+	| context scanner sends |
+	context := thisContext.
+	[	context := context sender. 
+		context receiver == self ] whileTrue.
+	scanner := InstructionStream on: context method.
+	sends := Stack new.
+	scanner scanFor: [ :bytecode | 
+		sends push: scanner selectorToSendOrSelf.
+		scanner pc >= context pc ].
+	[	sends isEmpty ifTrue: [ ^'<unknown>' ].
+		sends pop == #should ] whileFalse.
+	sends top isSymbol ifFalse: [ ^'<unknown>' ].
+	^sends top
 ]
 
 { #category : #private }
@@ -296,26 +316,6 @@ PhexMatcher >> true [
 	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: true].
 	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: true ].
 	Error signal: 'Illegal state ', state asString
-]
-
-{ #category : #private }
-PhexMatcher >> walkStackAndByteCodeToFindNameOfUnknownMessage [
-	"	1. walk up the stack until we are outside of this instance.
-		2. collect all sent message from bytecode up to program counter.
-		3. drop messages until #should and return previous. "
-	| context scanner sends |
-	context := thisContext.
-	[	context := context sender. 
-		context receiver == self ] whileTrue.
-	scanner := InstructionStream on: context method.
-	sends := Stack new.
-	scanner scanFor: [ :bytecode | 
-		sends push: scanner selectorToSendOrSelf.
-		scanner pc >= context pc ].
-	[	sends isEmpty ifTrue: [ ^'<unknown>' ].
-		sends pop == #should ] whileFalse.
-	sends top isSymbol ifFalse: [ ^'<unkown>' ].
-	^sends top
 ]
 
 { #category : #expecting }

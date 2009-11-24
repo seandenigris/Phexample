@@ -54,6 +54,13 @@ ForExampleMatcher >> shouldChangeFromTo [
 	[ list add: nil ] should change: [ list size ] from: 2 to: 3.
 ]
 
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldContainNameOfBooleanPropertyInMessageTextWhenFailing [
+	[ nil notNil should beTrue ] should
+		signal: TestFailure
+		withMessageText: 'expected #notNil to be true'
+]
+
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldEndWith [
 	'abcdef' should endWith: 'def'.
@@ -71,15 +78,16 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 
 ]
 
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldFindOriginalSend [
-	[Stack new isEmpty should not be true] should 
-		signal: TestFailure withMessageText: 'did not expect #isEmpty to be true'
-]
-
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldGreaterThan [
   6 should > 5 
+]
+
+{ #category : #'examples-expecting-boolean' }
+ForExampleMatcher >> shouldHandlePathologicCaseOfBooleanPropertyWhenFailing [
+	[ nil should beTrue ] should
+		signal: TestFailure
+		withMessageText: 'expected #<unknown> to be true'
 ]
 
 { #category : #examples }
@@ -104,12 +112,6 @@ ForExampleMatcher >> shouldLesserThan [
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldMatchRegex [
 	'aaa' should matchRegex: 'a*'.
-]
-
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldNameFailedProperty [
-	[Stack new should not be isEmpty] should 
-		signal: TestFailure withMessageText: 'expected isEmpty NOT to return true but got true'
 ]
 
 { #category : #'examples-expecting-boolean' }
