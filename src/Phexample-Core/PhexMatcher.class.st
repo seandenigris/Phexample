@@ -136,8 +136,7 @@ PhexMatcher >> change: aBlock from: before to: after [
 { #category : #private }
 PhexMatcher >> doesNotUnderstand: aMessage [
 	(state = #(be) or: [state = #(not be)]) ifFalse: [super doesNotUnderstand: aMessage].
-	"state = #(be) ifTrue: [state:= #()].
-	state = #(not be) ifTrue: [state := #(not)]."
+	state := state copyWithout: #be.
 	^ self message: aMessage expect: [(aMessage sendTo: value) = true] .
 ]
 
@@ -175,7 +174,7 @@ PhexMatcher >> expect: expected using: aSymbol [
 { #category : #private }
 PhexMatcher >> expectSameHash: expected [
 	value hash = expected hash ifFalse: [
-		TestFailure signal: ('Expected same hash for <1p> and <2p> (using hash implied by =)'
+		TestFailure signal: ('expected same hash for <1p> and <2p> (using hash implied by =)'
 			expandMacrosWith: value
 			with: expected) ].
 	^nil
@@ -183,20 +182,28 @@ PhexMatcher >> expectSameHash: expected [
 
 { #category : #private }
 PhexMatcher >> expectedUnknownMessageToReturn: expected [ 
-	|actual sender message |
-	actual := value.
-
-	sender := thisContext sender sender.
-	message := sender method messageSendBeforeLastShouldCurrentPc: sender pc.
-	message ifNil: [^ self = expected].
-	^ self message: message expect: [actual = expected]
+	| sender message |
+	state := state copyWithout: #be.
+	^self expect: [ value = expected ]
+		describeShould: [
+			sender := thisContext p sender p sender p sender p sender p.
+			message := sender method messageSendBeforeLastShouldCurrentPc: sender pc.
+			message isNil ifTrue: [ message := '<none>' ].
+			'expected #<1s> to return true' expandMacrosWith: message.
+			]
+		describeShouldNot: [
+			sender := thisContext p sender p sender p sender p sender p.
+			message := sender method messageSendBeforeLastShouldCurrentPc: sender pc.
+			message isNil ifTrue: [ message := '<none>' ].
+			'expected #<1s> not to return true' expandMacrosWith: message.
+			].
 	
 ]
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> false [
-	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: false].
-	state = #(not be) ifTrue: [ state := #(). ^self  expectedUnknownMessageToReturn: true ].
+	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: false].
+	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: false ].
 	Error signal: 'Illegal state ', state asString
 ]
 
@@ -212,12 +219,12 @@ PhexMatcher >> initialize [
 
 { #category : #private }
 PhexMatcher >> isShould [
-	^state = #() or: [state = #(be)]
+	^state = #()
 ]
 
 { #category : #private }
 PhexMatcher >> isShouldNot [
-	^state = #(not) or: [state = #(not be)]
+	^state = #(not)
 ]
 
 { #category : #'expecting-string' }
@@ -292,8 +299,8 @@ PhexMatcher >> signal: errorClass withMessageText: message [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> true [
-	state = #(be) ifTrue: [ state := #(). ^ self expectedUnknownMessageToReturn: true].
-	state = #(not be) ifTrue: [ state := #(not). ^self  expectedUnknownMessageToReturn: true ].
+	state = #(be) ifTrue: [ ^self expectedUnknownMessageToReturn: true].
+	state = #(not be) ifTrue: [ ^self expectedUnknownMessageToReturn: true ].
 	Error signal: 'Illegal state ', state asString
 ]
 

@@ -97,7 +97,7 @@ ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldFindOriginalSend [
 	[Stack new isEmpty should not be true] should 
-		signal: TestFailure withMessageText: 'expected #isEmpty NOT to return true but got true'
+		signal: TestFailure withMessageText: 'expected #isEmpty not to return true'
 ]
 
 { #category : #'examples-expecting' }
@@ -358,9 +358,9 @@ ForExampleMatcher >> shouldTestForSameHashWhenExpectingEqualValues [
 	p hash should = 2.
 	p hash should = 3.
 	[ p should = p ] should signal: TestFailure
-		withMessageText: 'Expected same hash for probe and probe (using hash implied by =)'.
+		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
 	[ p should not ~= p ] should signal: TestFailure 
-		withMessageText: 'Expected same hash for probe and probe (using hash implied by =)'.
+		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
 	factory cleanUp.
 
 
