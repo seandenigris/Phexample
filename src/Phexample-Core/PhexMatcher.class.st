@@ -196,19 +196,19 @@ PhexMatcher >> findNameOfUnknownMessage [
 	"	1. walk up the stack until we are outside of this instance.
 		2. collect all sent message from bytecode up to program counter.
 		3. drop messages until #should and return previous. "
-	| context scanner sends |
-	context := thisContext.
-	[	context := context sender. 
-		context receiver == self ] whileTrue.
-	scanner := InstructionStream on: context method.
-	sends := Stack new.
+	| frame scanner sent |
+	frame := thisContext.
+	[	frame := frame sender. 
+		frame receiver == self ] whileTrue.
+	scanner := InstructionStream on: frame method.
+	sent := Stack new.
 	scanner scanFor: [ :bytecode | 
-		sends push: scanner selectorToSendOrSelf.
-		scanner pc >= context pc ].
-	[	sends isEmpty ifTrue: [ ^'<unknown>' ].
-		sends pop == #should ] whileFalse.
-	sends top isSymbol ifFalse: [ ^'<unknown>' ].
-	^sends top
+		sent push: scanner selectorToSendOrSelf.
+		(frame pc - 1) <= scanner pc ].
+	[	sent isEmpty ifTrue: [ ^'<unknown>' ].
+		sent pop == #should ] whileFalse.
+	sent top isSymbol ifFalse: [ ^'<unknown>' ].
+	^sent top
 ]
 
 { #category : #private }
