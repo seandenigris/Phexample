@@ -24,6 +24,11 @@ Phexample class >> allTestSelectors [
 			
 ]
 
+{ #category : #equality }
+Phexample >> = example [
+	^self class = example class and: [ self selector = example selector ]
+]
+
 { #category : #private }
 Phexample >> cleanUpInstanceVariables [
 	| names |
@@ -35,11 +40,21 @@ Phexample >> cleanUpInstanceVariables [
 { #category : #dependencies }
 Phexample >> given: anExampleName [ 
 	self should respondTo: anExampleName.
-	^ [ self perform: anExampleName ] 
+	^ [ Given current consumeReturnValueAt: (self class selector: anExampleName) ] 
 		on: Exception
 		do: [ :ex | 
 			givenNotGiven := true.
 			ex pass ]
+]
+
+{ #category : #equality }
+Phexample >> hash [
+	^self class hash bitXor: self selector hash
+]
+
+{ #category : #private }
+Phexample >> performTest [
+	^Given current produceReturnValueAt: self. 
 ]
 
 { #category : #private }
