@@ -88,7 +88,7 @@ ForExampleMatcher >> shouldHaveTestsInThisClass [
 	
 ]
 
-{ #category : #'exanples-expecting-collections' }
+{ #category : #'examples-expecting-collections' }
 ForExampleMatcher >> shouldInclude [
 	#(foo bar) should include: #foo
 ]
@@ -139,7 +139,7 @@ ForExampleMatcher >> shouldNotHaveTestsInEGExample [
 	
 ]
 
-{ #category : #'exanples-expecting-collections' }
+{ #category : #'examples-expecting-collections' }
 ForExampleMatcher >> shouldNotInclude [
 	#(foo bar) should not include: #qux
 ]
@@ -248,7 +248,7 @@ ForExampleMatcher >> shouldSignalWhenGreaterThanFails [
   [ 4 should > 4 ] should signal: TestFailure withMessageText: 'expected 4 but got 4 (using >)'.
 ]
 
-{ #category : #'exanples-expecting-collections' }
+{ #category : #'examples-expecting-collections' }
 ForExampleMatcher >> shouldSignalWhenIncludeFails [
 	[ #(foo bar) should include: #qux ] should signal: TestFailure
 ]
@@ -280,7 +280,7 @@ ForExampleMatcher >> shouldSignalWhenNotBeTrueFails [
 		withMessageText: 'did not expect #isEmpty to be true'
 ]
 
-{ #category : #'exanples-expecting-collections' }
+{ #category : #'examples-expecting-collections' }
 ForExampleMatcher >> shouldSignalWhenNotIncludeFails [
 	[ #(foo bar) should not include: #foo ] should signal: TestFailure
 ]
