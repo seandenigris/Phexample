@@ -26,6 +26,11 @@ Class {
 
 { #category : #documentation }
 PhexMatcher class >> rewriteRules [
+	"Use this TreeRewriter to rewrite existing SUnit tests to Phexample.
+	To run the rewrite rules open the following menu:
+		Classlist -> refactor -> rewrite code.
+	Copy paste the following code in and save it to execute the rewrite rules.
+	"
 	^RBParseTreeRewriter new
 		replace: 'self assert: [ `@expression ]' with: 'self assert: `@expression';
 		replace: 'self deny: `@expression' with: 'self assert: `@expression not';
