@@ -1,6 +1,9 @@
 Class {
 	#name : #PhexampleTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'factory'
+	],
 	#category : #'Phexample-Test'
 }
 
@@ -9,19 +12,25 @@ PhexampleTest class >> allTestSelectors [
 	^self selectors select: [ :each | each beginsWith: 'should' ] 
 ]
 
+{ #category : #fixture }
+PhexampleTest >> setUp [
+	factory := ClassFactoryForTestCase new
+]
+
 { #category : #examples }
 PhexampleTest >> shouldExecuteExampleMethod [
-	| factory class testcase hasRun result |
-	factory := ClassFactoryForTestCase new.
-	class := factory newSubclassOf: Phexample instanceVariableNames: 'action' classVariableNames: ''.
+	| class testcase hasRun result |
+	class := factory newSubclassOf: Phexample
+		instanceVariableNames: 'action'
+		classVariableNames: ''.
 	class compile: 'shouldRun action value'.
 	class compile: 'action: aBlock action := aBlock'.
 	testcase := class selector: #shouldRun.
 	testcase action: [ hasRun := true ].
-	result := testcase run. 
+	result := testcase run.
 	result tests size should = 1.
 	result passed size should = 1.
-	hasRun should be true.
+	hasRun should be true
 ]
 
 { #category : #examples }
@@ -34,4 +43,9 @@ PhexampleTest >> shouldNotHaveTestsInPhexample [
 	Phexample allTestSelectors isEmpty should be true.
 	
 	
+]
+
+{ #category : #fixture }
+PhexampleTest >> tearDown [
+	factory cleanUp
 ]
