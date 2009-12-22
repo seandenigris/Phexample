@@ -111,6 +111,11 @@ PhexMatcher >> beKindOf: expectedClass [
 				with: value class ]
 ]
 
+{ #category : #expecting }
+PhexMatcher >> beSameAs: expected [
+	^ self expect: expected using: #==
+]
+
 { #category : #'expecting-boolean' }
 PhexMatcher >> beTrue [
 	^self be true

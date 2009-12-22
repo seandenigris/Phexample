@@ -19,6 +19,11 @@ ForExampleMatcher >> shouldBeKindOfSuperclass [
 	'hello' should beKindOf: Collection
 ]
 
+{ #category : #'examples-expecting' }
+ForExampleMatcher >> shouldBeSame [
+	[ self should beSameAs: self ] value should = nil.
+]
+
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeTrue [
 	Set new isEmpty should beTrue.
@@ -59,13 +64,6 @@ ForExampleMatcher >> shouldEndWith [
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldEqualFive [
 	(2 + 3) should = 5
-]
-
-{ #category : #examples }
-ForExampleMatcher >> shouldFailIfRequirementDoesntExist [
-	[self given: #zork] should signal: TestFailure
-
-
 ]
 
 { #category : #'examples-expecting' }
@@ -132,13 +130,6 @@ ForExampleMatcher >> shouldNotEqualSeven [
 	(2 + 3) should not = 7
 ]
 
-{ #category : #examples }
-ForExampleMatcher >> shouldNotHaveTestsInEGExample [
-	Phexample allTestSelectors isEmpty should be true.
-	
-	
-]
-
 { #category : #'examples-expecting-collections' }
 ForExampleMatcher >> shouldNotInclude [
 	#(foo bar) should not include: #qux
@@ -172,8 +163,7 @@ ForExampleMatcher >> shouldRespondTo [
 
 { #category : #examples }
 ForExampleMatcher >> shouldReturnNilWhenTesting [
-	(5 should = 5) isNil should be true
-
+	[ 5 should = 5 ] value should = nil 
 ]
 
 { #category : #'examples-expecting-performance' }
@@ -219,6 +209,13 @@ ForExampleMatcher >> shouldSignalWhenBeFalseFails [
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldSignalWhenBeKindOfFails [
 	[ 'hello' should beKindOf: Number ] should signal: TestFailure
+]
+
+{ #category : #'examples-expecting' }
+ForExampleMatcher >> shouldSignalWhenBeSameFails [
+	[ 'string' clone should beSameAs: 'string' clone ] 
+		should signal: TestFailure 
+		withMessageText: 'expected ''string'' but got ''string'' (using ==)'
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -309,6 +306,15 @@ ForExampleMatcher >> shouldSignalWhenRespondToFails [
 { #category : #'examples-expecting-performance' }
 ForExampleMatcher >> shouldSignalWhenRunWithinFails [
 	[ [ (Delay forMilliseconds: 20) wait ] should runWithin: 10 milliSeconds ] should signal: TestFailure
+]
+
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldSignalWhenSignalWithMessageTextFails [
+	[ [ self error: 'foo' ] should 
+		signal: Error 
+		withMessageText: 'bar' ] on: TestFailure
+		do: [ :ex | 
+			ex messageText should = 'expected ''bar'' but got ''foo'' (using =)' ]
 ]
 
 { #category : #'examples-expecting-error' }

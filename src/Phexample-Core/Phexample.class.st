@@ -19,9 +19,13 @@ Phexample class >> allTestSelectors [
 	|selectors|
 	selectors := self allSelectors clone.
 	selectors removeAll: Phexample allSelectors.
-	^ selectors select: [:each | 
-		('should*' match: each) and: [each numArgs isZero]]
+	^ selectors select: [ :each | each numArgs isZero and: [ each beginsWith: 'should' ]]
 			
+]
+
+{ #category : #accessing }
+Phexample class >> resources [
+	^{ Given }
 ]
 
 { #category : #equality }

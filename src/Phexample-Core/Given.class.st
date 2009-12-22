@@ -8,14 +8,6 @@ Class {
 }
 
 { #category : #dependencies }
-Given >> at: testMethod ifAbsentPut: resultBlock [
-	^(cache h includesKey: testMethod)
-		ifTrue: [ cache removeKey: testMethod ]
-		ifFalse: [ cache at: testMethod put: resultBlock value ]
-
-]
-
-{ #category : #dependencies }
 Given >> consumeReturnValueAt: testMethod [
 	^(cache includesKey: testMethod)
 		ifTrue: [ cache removeKey: testMethod ]
