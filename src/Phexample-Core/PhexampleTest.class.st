@@ -39,6 +39,29 @@ PhexampleTest >> shouldHaveGivenAsResource [
 ]
 
 { #category : #examples }
+PhexampleTest >> shouldNicelyHandleNotifications [
+	"Checks whether notifications are properly ignored, both immediately and in dependent tests."
+	| class testcase hasRun result suite |
+	class := factory newSubclassOf: Phexample
+		instanceVariableNames: ''
+		classVariableNames: ''.
+	class compile: 'throwNotification Notification  signal:''Waa!'''.
+	class compile: 'consumeNotification   self given: #throwNotification. '.
+	suite := TestSuite new.
+	suite 
+		addTest: (class selector: #throwNotification);
+		addTest: ( class selector: #consumeNotification).
+	result := suite run.
+	result passedCount should = 2 .
+	result	failureCount should = 0.
+	result	errorCount should = 0 .
+	result	unexpectedPassCount should = 0.
+	result	unexpectedErrorCount should = 0.
+	result	unexpectedFailureCount should = 0.
+			
+]
+
+{ #category : #examples }
 PhexampleTest >> shouldNotHaveTestsInPhexample [
 	Phexample allTestSelectors isEmpty should be true.
 	

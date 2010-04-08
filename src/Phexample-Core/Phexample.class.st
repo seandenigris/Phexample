@@ -45,7 +45,7 @@ Phexample >> cleanUpInstanceVariables [
 Phexample >> given: anExampleName [ 
 	self should respondTo: anExampleName.
 	^ [ Given current consumeReturnValueAt: (self class selector: anExampleName) ] 
-		on: Exception
+		on: TestResult error
 		do: [ :ex | 
 			givenNotGiven := true.
 			ex pass ]
