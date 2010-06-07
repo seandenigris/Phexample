@@ -17,7 +17,7 @@ Class {
 { #category : #accessing }
 Phexample class >> allTestSelectors [
 	|selectors|
-	selectors := self allSelectors clone.
+	selectors := self allSelectors copy.
 	selectors removeAll: Phexample allSelectors.
 	^ selectors select: [ :each | each numArgs isZero and: [ each beginsWith: 'should' ]]
 			
