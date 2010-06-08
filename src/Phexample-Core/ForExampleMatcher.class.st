@@ -213,7 +213,7 @@ ForExampleMatcher >> shouldSignalWhenBeKindOfFails [
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldSignalWhenBeSameFails [
-	[ 'string' clone should beSameAs: 'string' clone ] 
+	[ 'string' copy should beSameAs: 'string' copy ] 
 		should signal: TestFailure 
 		withMessageText: 'expected ''string'' but got ''string'' (using ==)'
 ]

@@ -17,7 +17,7 @@ ForExampleStack >> shouldBeEmpty [
 ForExampleStack >> shouldFailWhenPopEmpty [
 	| stack |
 	stack := self given: #shouldBeEmpty.
-	[ stack pop ] should signal: Error withMessageText: 'this stack is empty'.
+	[ stack pop ] should signal: Error withMessageText: 'this collection is empty'.
 ]
 
 { #category : #examples }
