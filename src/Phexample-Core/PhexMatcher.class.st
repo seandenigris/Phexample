@@ -292,7 +292,7 @@ PhexMatcher >> signal: errorClass [
 	
 	value on: Exception do: [ :ex |
 		^ex should beKindOf: errorClass ].
-	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
+	self expect: false describeShould: ['Should raise <1p> but was none' expandMacrosWith: errorClass] describeShouldNot: ['Should not raise <1p> but did' expandMacrosWith: errorClass]
 ]
 
 { #category : #'expecting-error' }
