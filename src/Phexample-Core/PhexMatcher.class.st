@@ -3,6 +3,11 @@ A PhexMatcher is the sort of thing that works out if your example behaves proper
 
 Please notice that = works unlike in most classes. Therefore, do not store me in a collection!
 
+If you wish to forward to another 'should' method call, the state of this matcher
+would be lost. Instead, call either expect*, which works fine, or, if nothing else works,
+use self should:. Note that this is much slower and leads to messier stack traces than 
+calling expect
+
 Instance Variables
 	state:		the items matched so far
 	value:		
@@ -57,6 +62,13 @@ PhexMatcher class >> rewriteRules [
 { #category : #creation }
 PhexMatcher class >> with: anObject [ 
 	^ self new setValue: anObject
+]
+
+{ #category : #creation }
+PhexMatcher class >> with: anObject state: aState [
+	^ self new setValue: anObject;
+		 state: aState;
+		 yourself
 ]
 
 { #category : #expecting }
@@ -138,9 +150,9 @@ PhexMatcher >> change: aBlock [
 
 { #category : #'expecting-change' }
 PhexMatcher >> change: aBlock from: before to: after [
-	aBlock value should = before.
+	(self should: aBlock value) = before.
 	value value.
-	aBlock value should = after.
+	(self should: aBlock value)  = after.
 ]
 
 { #category : #'expecting-string' }
@@ -263,6 +275,11 @@ PhexMatcher >> matchRegex: regexString [
 	^self expect: regexString using: #matchesRegex:
 ]
 
+{ #category : #'expecting-boolean' }
+PhexMatcher >> nil [
+	^self expectedUnknownMessageToReturn: nil
+]
+
 { #category : #expecting }
 PhexMatcher >> not [
 	state := state copyWith: #not
@@ -298,23 +315,47 @@ PhexMatcher >> setValue: anObject [
 	value := anObject 
 ]
 
+{ #category : #private }
+PhexMatcher >> should: anObject [
+	"If you wish to forward to another 'should method call, the state of this matcher
+	 would be lost. Instead, call either expect*, which works fine, or, if nothing else works,
+	use self should:. Note that this is much slower and leads to messier stack traces than 
+	calling expect*."
+	^ PhexMatcher with: anObject state: state copy
+]
+
 { #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass [ 
-	
 	value on: Exception do: [ :ex |
-		^ex should beKindOf: errorClass ].
-	self expect: false describeShould: ['Should raise <1p> but was none' expandMacrosWith: errorClass] describeShouldNot: ['Should not raise <1p> but did' expandMacrosWith: errorClass]
+		^(self should: ex) beKindOf: errorClass ].
+	"No exception was signaled."
+	self expect: false 
+		describeShould: ['Should raise <1p> but was none' expandMacrosWith: errorClass] 
+		describeShouldNot: ['Should not raise <1p> but did' expandMacrosWith: errorClass]
 ]
 
 { #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass withMessageText: message [
 
 	value on: Exception do: [ :ex | 
-		ex should beKindOf: errorClass.
-		^message isBlock 
+		(self should: ex) beKindOf: errorClass.
+		message isBlock 
 			ifTrue: [ message value: ex messageText ]
-			ifFalse: [ ^ex messageText should = message ]].
-	TestFailure signal: ('Should raise <1p> but was none' expandMacrosWith: errorClass).
+			ifFalse: [ (self should: ex messageText) = message ].
+		^self].
+	self expect: false
+		 describeShould: [ 'Should raise <1p> but was none' expandMacrosWith: errorClass]
+		 describeShouldNot:  [ 'Should not raise <1p> but did' expandMacrosWith: errorClass].
+]
+
+{ #category : #accessing }
+PhexMatcher >> state [
+	^ state
+]
+
+{ #category : #accessing }
+PhexMatcher >> state: anObject [
+	state := anObject
 ]
 
 { #category : #'expecting-boolean' }

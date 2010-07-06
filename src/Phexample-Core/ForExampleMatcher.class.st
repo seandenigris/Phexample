@@ -163,6 +163,16 @@ ForExampleMatcher >> shouldNotRespondTo [
 	Object new should not respondTo: #zork
 ]
 
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldNotSignalIfNothingFailed [
+	[   ] should not signal: Error.
+]
+
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldNotSignalWithMessageText [
+	[ ] should not signal: Error withMessageText: 'bla'
+]
+
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldRespondTo [
 	Object new should respondTo: #yourself
@@ -204,6 +214,14 @@ ForExampleMatcher >> shouldSignalIfSignalWrong [
 	[ [ self error ] should signal: TestFailure ] should 
 		signal: TestFailure 
 		"withMessageText: 'Expected class TestFailure but was Error'"
+]
+
+{ #category : #'examples-expecting-error' }
+ForExampleMatcher >> shouldSignalIfUnexpectedSignalOfSubtype [
+
+	[ [ 5 should = 6] should not signal: TestFailure ] should 
+		signal: TestFailure
+		withMessageText:  'expected not to get kind of TestFailure but got instance of TestFailure (using isKindOf)'
 ]
 
 { #category : #'examples-expecting-boolean' }
