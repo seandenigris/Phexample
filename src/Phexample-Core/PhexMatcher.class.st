@@ -149,6 +149,17 @@ PhexMatcher >> endWith: aSuffix [
 	
 ]
 
+{ #category : #'expecting-collections' }
+PhexMatcher >> equalIgnoringOrder: anotherCollection [
+	self expect: [ value sorted = anotherCollection sorted] 
+		describeShould:  ['Expected <1p> to equal <2p> ignoring order, but didn''t.' 
+				expandMacrosWith: value 
+				with: anotherCollection ]  
+		describeShouldNot: ['Expected <1p> to not equal <2p> ignoring order, but did.'
+			 	expandMacrosWith: value
+				with: anotherCollection ]
+]
+
 { #category : #private }
 PhexMatcher >> expect: aBlock describeShould: shouldBlock describeShouldNot: shouldNotBlock [
 	self isShould ifTrue: [

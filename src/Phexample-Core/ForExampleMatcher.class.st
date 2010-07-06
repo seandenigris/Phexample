@@ -66,6 +66,13 @@ ForExampleMatcher >> shouldEqualFive [
 	(2 + 3) should = 5
 ]
 
+{ #category : #'examples-expecting-collections' }
+ForExampleMatcher >> shouldEqualIgnoringOrder [
+	'Hi Niko' should equalIgnoringOrder: 'iH ikoN'.
+	'Hi Niko' should not equalIgnoringOrder: 'Hi Niko2'.
+	'Hi Niko' should not equalIgnoringOrder: 'Hi Niko '. "Trailing space."
+]
+
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldGreaterThan [
   6 should > 5 
