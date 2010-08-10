@@ -11,7 +11,12 @@ Class {
 Given >> consumeReturnValueAt: testMethod [
 	^(cache includesKey: testMethod)
 		ifTrue: [ cache removeKey: testMethod ]
-		ifFalse: [ testMethod perform: testMethod selector ]
+		ifFalse: [ |ret|
+			testMethod setUp.
+			ret := testMethod perform: testMethod selector.
+			testMethod tearDown.
+			ret
+			 ]
 ]
 
 { #category : #dependencies }
