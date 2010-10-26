@@ -19,13 +19,21 @@ Phexample class >> allTestSelectors [
 	|selectors|
 	selectors := self allSelectors copy.
 	selectors removeAll: Phexample allSelectors.
-	^ selectors select: [ :each | each numArgs isZero and: [ each asLowercase includesSubString: 'should' ]]
+	selectors := selectors select: 
+		[ :each | each numArgs isZero and:
+			[ (each asLowercase includesSubString: 'should')]].
+	^ selectors union: super allTestSelectors 
 			
 ]
 
 { #category : #accessing }
 Phexample class >> resources [
 	^{ Given }
+]
+
+{ #category : #accessing }
+Phexample class >> shouldInheritSelectors [
+	^true
 ]
 
 { #category : #equality }
@@ -39,6 +47,13 @@ Phexample >> cleanUpInstanceVariables [
 	names := self class allInstVarNames asOrderedCollection.
 	names removeAll: Phexample allInstVarNames.
 	names do: [ :name | self instVarNamed: name put: nil ]
+]
+
+{ #category : #private }
+Phexample >> expectedFailures [
+	| pragmas |
+	pragmas := Pragma allNamed: #expectedFailure from: self class to: Object.
+	^ pragmas collect: [:each | each method selector  ].
 ]
 
 { #category : #dependencies }

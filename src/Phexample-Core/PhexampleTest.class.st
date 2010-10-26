@@ -9,7 +9,9 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhexampleTest class >> allTestSelectors [ 
-	^self selectors select: [ :each | each beginsWith: 'should' ] 
+	| selectors |
+	selectors := self selectors select: [ :each | each beginsWith: 'should' ].
+	^ selectors union: super allTestSelectors 
 ]
 
 { #category : #fixture }
