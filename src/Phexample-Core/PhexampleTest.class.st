@@ -1,6 +1,6 @@
 Class {
 	#name : #PhexampleTest,
-	#superclass : #TestCase,
+	#superclass : #Phexample,
 	#instVars : [
 		'factory'
 	],

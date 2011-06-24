@@ -17,13 +17,15 @@ Class {
 { #category : #accessing }
 Phexample class >> allTestSelectors [
 	|selectors|
-	selectors := self allSelectors copy.
-	selectors removeAll: Phexample allSelectors.
-	selectors := selectors select: 
-		[ :each | each numArgs isZero and:
-			[ (each asLowercase includesSubString: 'should')]].
-	^ selectors union: super allTestSelectors 
-			
+	^ super allTestSelectors
+		removeAllFoundIn: Phexample allSelectors;
+		yourself.
+]
+
+{ #category : #'selector testing' }
+Phexample class >> isTest: aSelector [
+
+	^ (super isTest: aSelector) or: [ ( aSelector beginsWith: 'should' ) and: [ aSelector numArgs isZero ] ].
 ]
 
 { #category : #accessing }
