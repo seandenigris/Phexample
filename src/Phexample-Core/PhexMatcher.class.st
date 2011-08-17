@@ -239,7 +239,7 @@ PhexMatcher >> findNameOfUnknownMessage [
 		sent push: scanner selectorToSendOrSelf.
 		(frame pc - 1) <= scanner pc ].
 	[	sent isEmpty ifTrue: [ ^'<unknown>' ].
-		sent pop == #should ] whileFalse.
+		sent pop = #should ] whileFalse.
 	sent top isSymbol ifFalse: [ ^'<unknown>' ].
 	^sent top
 ]
@@ -326,10 +326,10 @@ PhexMatcher >> should: anObject [
 
 { #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass [ 
-	value on: Exception do: [ :ex |
-		^(self should: ex) beKindOf: errorClass ].
-	"No exception was signaled."
-	self expect: false 
+	| signaled |
+	signaled := false.
+	value on: errorClass do: [ :ex | signaled := true ].
+	self expect: signaled 
 		describeShould: ['Should raise <1p> but was none' expandMacrosWith: errorClass] 
 		describeShouldNot: ['Should not raise <1p> but did' expandMacrosWith: errorClass]
 ]

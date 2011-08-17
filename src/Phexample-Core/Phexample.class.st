@@ -64,6 +64,7 @@ Phexample >> expectedFailures [
 { #category : #dependencies }
 Phexample >> given: anExampleName [ 
 	self should respondTo: anExampleName.
+	(thisContext sender method selector = anExampleName) should be false.
 	^ [ Given current consumeReturnValueAt: (self class selector: anExampleName) ] 
 		on: TestResult error
 		do: [ :ex | 

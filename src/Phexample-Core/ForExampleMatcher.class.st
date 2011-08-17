@@ -212,7 +212,7 @@ ForExampleMatcher >> shouldSignalIfSignalMissing [
 ForExampleMatcher >> shouldSignalIfSignalWrong [
 
 	[ [ self error ] should signal: TestFailure ] should 
-		signal: TestFailure 
+		signal: Error 
 		"withMessageText: 'Expected class TestFailure but was Error'"
 ]
 
@@ -221,7 +221,7 @@ ForExampleMatcher >> shouldSignalIfUnexpectedSignalOfSubtype [
 
 	[ [ 5 should = 6] should not signal: TestFailure ] should 
 		signal: TestFailure
-		withMessageText:  'expected not to get kind of TestFailure but got instance of TestFailure (using isKindOf)'
+		withMessageText:  'Should not raise TestFailure but did'
 ]
 
 { #category : #'examples-expecting-boolean' }
