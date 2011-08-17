@@ -7,13 +7,6 @@ Class {
 	#category : #'Phexample-Test'
 }
 
-{ #category : #'as yet unclassified' }
-PhexampleTest class >> allTestSelectors [ 
-	| selectors |
-	selectors := self selectors select: [ :each | each beginsWith: 'should' ].
-	^ selectors union: super allTestSelectors 
-]
-
 { #category : #fixture }
 PhexampleTest >> setUp [
 	factory := ClassFactoryForTestCase new
