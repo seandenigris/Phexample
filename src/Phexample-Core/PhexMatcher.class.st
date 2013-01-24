@@ -155,6 +155,11 @@ PhexMatcher >> change: aBlock from: before to: after [
 	(self should: aBlock value)  = after.
 ]
 
+{ #category : #'TDD todos' }
+PhexMatcher >> do: aDescription [
+	TestTodo signal: aDescription
+]
+
 { #category : #'expecting-string' }
 PhexMatcher >> endWith: aSuffix [
 	^self expect: aSuffix using: #endsWith: 
@@ -247,6 +252,16 @@ PhexMatcher >> findNameOfUnknownMessage [
 { #category : #private }
 PhexMatcher >> hash [
 	self error: 'Don''t put a matcher into a dictionary. It does not behave ordinarily on ='
+]
+
+{ #category : #'TDD todos' }
+PhexMatcher >> implement: aDescription [
+	TestTodo signal: aDescription
+]
+
+{ #category : #'TDD todos' }
+PhexMatcher >> implemented [
+	TestTodo signal.
 ]
 
 { #category : #'expecting-collections' }
@@ -356,6 +371,11 @@ PhexMatcher >> state [
 { #category : #accessing }
 PhexMatcher >> state: anObject [
 	state := anObject
+]
+
+{ #category : #'TDD todos' }
+PhexMatcher >> testFor: aDescription [
+	TestTodo signal: aDescription
 ]
 
 { #category : #'expecting-boolean' }
