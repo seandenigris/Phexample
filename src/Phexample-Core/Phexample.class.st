@@ -21,7 +21,7 @@ Phexample class >> allTestSelectors [
 	selectors removeAll: Phexample allSelectors.
 	selectors := selectors select: 
 		[ :each | each numArgs isZero and:
-			[ (each asLowercase includesSubString: 'should')]].
+			[ (each asLowercase includesSubstring: 'should')]].
 	^ selectors union: super allTestSelectors 
 ]
 
