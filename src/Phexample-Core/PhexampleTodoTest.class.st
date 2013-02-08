@@ -4,7 +4,14 @@ Class {
 	#category : #'Phexample-Test'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+PhexampleTodoTest >> expectedFailures [
+	^ (Smalltalk hasClassNamed: #TestTodo)
+		ifTrue:  [ #() ]
+		ifFalse: [ #(shouldSupportTodo) ]
+]
+
+{ #category : #tests }
 PhexampleTodoTest >> shouldSupportTodo [
 	self should do: 'a real test'.
 	self should testFor: 'something'.
