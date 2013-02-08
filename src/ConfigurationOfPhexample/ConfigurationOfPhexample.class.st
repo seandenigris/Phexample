@@ -165,6 +165,6 @@ ConfigurationOfPhexample >> version10: spec [
 		spec description: 'initial version'.
 		spec author: 'StefanMarr'.
 		spec timestamp: '2/8/2013 11:46'.
-		spec package: 'Phexample' with: 'Phexample-StefanMarr.66'. ].
+		spec package: 'Phexample' with: 'Phexample-StefanMarr.67'. ].
 
 ]
