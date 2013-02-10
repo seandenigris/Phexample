@@ -1,3 +1,6 @@
+"
+(ConfigurationOfPhexample version: #stable) load
+"
 Class {
 	#name : #ConfigurationOfPhexample,
 	#superclass : #Object,
