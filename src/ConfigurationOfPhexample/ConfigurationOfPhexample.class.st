@@ -1,5 +1,5 @@
 "
-(ConfigurationOfPhexample version: #stable) load
+(ConfigurationOfPhexample project version: #stable) load
 "
 Class {
 	#name : #ConfigurationOfPhexample,
