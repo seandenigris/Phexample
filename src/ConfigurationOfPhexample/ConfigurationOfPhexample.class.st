@@ -155,7 +155,8 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #stable>
 
-	spec for: #'common' version: '1.0'.
+	spec for: #'pharo1.4.x' version: '1.1'.
+	spec for: #'pharo2.x' version: '1.0'.
 
 ]
 
@@ -164,10 +165,23 @@ ConfigurationOfPhexample >> version10: spec [
 	<version: '1.0' imports: #('1.0-baseline' )>
 
 	spec for: #'common' do: [
-		spec blessing: #'stable'.
-		spec description: 'initial version'.
+		spec blessing: #'release'.
+		spec description: 'initial version working well for Pharo 2.0'.
 		spec author: 'StefanMarr'.
 		spec timestamp: '2/8/2013 11:46'.
 		spec package: 'Phexample' with: 'Phexample-StefanMarr.67'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version11: spec [
+	<version: '1.1' imports: #('1.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'release'.
+		spec description: 'initial version working well for Pharo 1.4'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '2/10/2013 17:46'.
+		spec package: 'Phexample' with: 'Phexample-StephaneDucasse.68'. ].
 
 ]
