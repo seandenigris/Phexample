@@ -17,7 +17,9 @@ ForExampleStack >> shouldBeEmpty [
 ForExampleStack >> shouldFailWhenPopEmpty [
 	| stack |
 	stack := self given: #shouldBeEmpty.
-	[ stack pop ] should signal: Error withMessageText: 'a Stack() is empty'.
+	[ stack pop ] should signal: Error.
+	[ stack pop ] on: Error do: [:e |
+		e messageText should matchRegex: '.* is empty'].
 ]
 
 { #category : #examples }
