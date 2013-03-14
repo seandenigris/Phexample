@@ -132,13 +132,18 @@ ConfigurationOfPhexample >> baseline12: spec [
 		spec package: 'Phexample' ].
 
 	spec for: #squeak do: [
-		spec package: 'PhexamplePlatform-Pharo14' ].
+		spec package: 'Phexample' with: [spec requires: 'Regex-Core'].
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'].
+		spec package: 'Pharo-Compatibility' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Scratchpad-fbs'].
+		spec package: 'Regex-Core' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Pharo20']].
 
 	spec for: #'pharo1.x' do: [
-		spec package: 'PhexamplePlatform-Pharo14' ].
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'] ].
 	
 	spec for: #'pharo2.x' do: [
-		spec package: 'PhexamplePlatform-Pharo20' ].
+		spec package: 'PhexamplePlatform-Pharo20' with: [spec requires: 'Phexample'] ].
 ]
 
 { #category : #accessing }
@@ -215,7 +220,9 @@ ConfigurationOfPhexample >> version12: spec [
 		spec package: 'Phexample' with: 'Phexample-StefanMarr.70'. ].
 
 	spec for: #squeak do: [
-		spec package: 'PhexamplePlatform-Pharo14' with: 'PhexamplePlatform-Pharo14-StefanMarr.1' ].
+		spec package: 'PhexamplePlatform-Pharo14' with: 'PhexamplePlatform-Pharo14-StefanMarr.1'.
+		spec package: 'Pharo-Compatibility' with: 'Pharo-Compatibility-fbs.2'.
+		spec package: 'Regex-Core' with: 'Regex-Core-MarcusDenker.22'].
 
 	spec for: #'pharo1.x' do: [
 		spec package: 'PhexamplePlatform-Pharo14' with: 'PhexamplePlatform-Pharo14-StefanMarr.1'].
