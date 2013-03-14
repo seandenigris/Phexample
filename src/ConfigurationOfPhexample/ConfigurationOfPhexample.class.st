@@ -122,6 +122,25 @@ ConfigurationOfPhexample >> baseline10: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhexample >> baseline12: spec [
+	<version: '1.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/Phexample/Phexample/main'.
+		spec package: 'Phexample' ].
+
+	spec for: #squeak do: [
+		spec package: 'PhexamplePlatform-Pharo14' ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14' ].
+	
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20' ].
+]
+
 { #category : #accessing }
 ConfigurationOfPhexample >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -134,7 +153,7 @@ ConfigurationOfPhexample >> customProjectAttributes [
 ConfigurationOfPhexample >> development: spec [
 	<symbolicVersion: #development>
 
-	spec for: #'common' version: '1.0'.
+	spec for: #'common' version: '1.2'.
 
 ]
 
@@ -155,9 +174,7 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #stable>
 
-	spec for: #'pharo1.4.x' version: '1.1'.
-	spec for: #'pharo2.x' version: '1.0'.
-
+	spec for: #'common' version: '1.2'.
 ]
 
 { #category : #versions }
@@ -183,5 +200,28 @@ ConfigurationOfPhexample >> version11: spec [
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '2/10/2013 17:46'.
 		spec package: 'Phexample' with: 'Phexample-StephaneDucasse.68'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version12: spec [
+	<version: '1.2' imports: #('1.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'release'.
+		spec description: 'separated out platform-specific code'.
+		spec author: 'StefanMarr'.
+		spec timestamp: '3/14/2013 13:55'.
+		spec package: 'Phexample' with: 'Phexample-StefanMarr.70'. ].
+
+	spec for: #squeak do: [
+		spec package: 'PhexamplePlatform-Pharo14' with: 'PhexamplePlatform-Pharo14-StefanMarr.1' ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14' with: 'PhexamplePlatform-Pharo14-StefanMarr.1'].
+	
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20' with: 'PhexamplePlatform-Pharo20-StefanMarr.1'
+	].
 
 ]
