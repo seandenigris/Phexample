@@ -117,7 +117,7 @@ ConfigurationOfPhexample >> baseline10: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
-		spec repository: 'http://smalltalkhub.com/mc/Phexample/Phexample/main'.
+		spec repository: 'http://www.smalltalkhub.com/mc/Phexample/Phexample/main'.
 		spec package: 'Phexample'. ].
 
 ]
@@ -128,7 +128,7 @@ ConfigurationOfPhexample >> baseline12: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
-		spec repository: 'http://smalltalkhub.com/mc/Phexample/Phexample/main'.
+		spec repository: 'http://www.smalltalkhub.com/mc/Phexample/Phexample/main'.
 		spec package: 'Phexample' ].
 
 	spec for: #squeak do: [
