@@ -45,7 +45,7 @@ ConfigurationOfPhexample class >> ensureMetacelloBaseConfiguration [
 		at: #MetacelloBaseConfiguration
 		ifAbsent: [ 
 			| repository version |
-			repository := MCHttpRepository location: 'http://seaside.gemstone.com/ss/metacello' user: '' password: ''.
+			repository := MCHttpRepository location: 'http://seaside.gemtalksystems.com/ss/metacello' user: '' password: ''.
 			repository
 				versionReaderForFileNamed: 'Metacello-Base-DaleHenrichs.2.mcz'
 				do: [ :reader | 
