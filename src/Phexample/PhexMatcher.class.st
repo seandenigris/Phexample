@@ -39,8 +39,8 @@ PhexMatcher class >> rewriteRules [
 	^RBParseTreeRewriter new
 		replace: 'self assert: [ `@expression ]' with: 'self assert: `@expression';
 		replace: 'self deny: `@expression' with: 'self assert: `@expression not';
-		replace: 'self assert: `@value = `@expected' with: '`@value should = `@expected';
-		replace: 'self assert: `@value ~= `@expected' with: '`@value should not = `@expected';
+		replace: 'self assert: `@value = `@expected' with: '`@value should equal: `@expected';
+		replace: 'self assert: `@value ~= `@expected' with: '`@value should not equal: `@expected';
 		replace: 'self assert: `@value > `@expected' with: '`@value should > `@expected';
 		replace: 'self assert: `@value < `@expected' with: '`@value should < `@expected';
 		replace: 'self assert: `@value >= `@expected' with: '`@value should >= `@expected';
@@ -79,14 +79,6 @@ PhexMatcher >> < expected [
 { #category : #expecting }
 PhexMatcher >> <= expected [
 	^self expect: expected using: #<=
-]
-
-{ #category : #expecting }
-PhexMatcher >> = expected [
-	self expect: expected using: #=.
-	self isShould ifTrue: [ self expectSameHash: expected ].
-	^nil
-	
 ]
 
 { #category : #expecting }
@@ -145,7 +137,7 @@ PhexMatcher >> change: aBlock [
 	before := aBlock value.
 	value value.
 	after := aBlock value.
-	before should not = after.	
+	before should not equal: after.	
 ]
 
 { #category : #'expecting-change' }
@@ -163,6 +155,14 @@ PhexMatcher >> do: aDescription [
 { #category : #'expecting-string' }
 PhexMatcher >> endWith: aSuffix [
 	^self expect: aSuffix using: #endsWith: 
+	
+]
+
+{ #category : #expecting }
+PhexMatcher >> equal: expected [
+	self expect: expected using: #=.
+	self isShould ifTrue: [ self expectSameHash: expected ].
+	^nil
 	
 ]
 
@@ -247,11 +247,6 @@ PhexMatcher >> findNameOfUnknownMessage [
 		sent pop = #should ] whileFalse.
 	sent top isSymbol ifFalse: [ ^'<unknown>' ].
 	^sent top
-]
-
-{ #category : #private }
-PhexMatcher >> hash [
-	self error: 'Don''t put a matcher into a dictionary. It does not behave ordinarily on ='
 ]
 
 { #category : #'TDD todos' }

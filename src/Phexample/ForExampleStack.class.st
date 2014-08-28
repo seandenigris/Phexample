@@ -9,7 +9,7 @@ ForExampleStack >> shouldBeEmpty [
 	| stack |
 	stack := Stack new.
 	stack isEmpty should beTrue.
-	stack size should = 0.
+	stack size should equal: 0.
 	^ stack
 ]
 
@@ -26,9 +26,9 @@ ForExampleStack >> shouldFailWhenPopEmpty [
 ForExampleStack >> shouldLastInFirstOut [
 	| stack |
 	stack := self given: #shouldPushMoreElements.
-	stack pop should = 13.
-	stack pop should = 7.
-	stack pop should = 42.
+	stack pop should equal: 13.
+	stack pop should equal: 7.
+	stack pop should equal: 42.
 	stack isEmpty should beTrue.
 ]
 
@@ -36,9 +36,9 @@ ForExampleStack >> shouldLastInFirstOut [
 ForExampleStack >> shouldPopElement [
 	| stack |
 	stack := self given: #shouldPushElement.
-	stack pop should = 42.
+	stack pop should equal: 42.
 	stack isEmpty should beTrue.
-	stack size should = 0.
+	stack size should equal: 0.
 	^ stack
 ]
 
@@ -48,8 +48,8 @@ ForExampleStack >> shouldPushElement [
 	stack := self given: #shouldBeEmpty.
 	stack push: 42.
 	stack isEmpty should not beTrue.
-	stack size should = 1.
-	stack top should = 42.
+	stack size should equal: 1.
+	stack top should equal: 42.
 	^ stack
 ]
 
@@ -60,7 +60,7 @@ ForExampleStack >> shouldPushMoreElements [
 	stack push: 7.
 	stack push: 13.
 	stack isEmpty should not beTrue.
-	stack size should = 3.
-	stack top should = 13.
+	stack size should equal: 3.
+	stack top should equal: 13.
 	^stack
 ]

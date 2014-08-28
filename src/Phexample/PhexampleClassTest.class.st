@@ -35,7 +35,7 @@ PhexampleClassTest >> expectedFailurePasses [
 
 { #category : #tests }
 PhexampleClassTest >> shouldComputeNumberOfTests [
-	self class allTestSelectors size should = 4.
+	self class allTestSelectors size should equal: 4.
 ]
 
 { #category : #tests }

@@ -30,8 +30,8 @@ PhexampleTest >> shouldExecuteExampleMethod [
 	testcase := class selector: #shouldRun.
 	testcase action: [ hasRun := true ].
 	result := testcase run.
-	result tests size should = 1.
-	result passed size should = 1.
+	result tests size should equal: 1.
+	result passed size should equal: 1.
 	hasRun should be true
 ]
 
@@ -43,7 +43,7 @@ PhexampleTest >> shouldHaveGivenAsResource [
 { #category : #examples }
 PhexampleTest >> shouldNicelyHandleNotifications [
 	"Checks whether notifications are properly ignored, both immediately and in dependent tests."
-	| class testcase hasRun result suite |
+	| class   result suite |
 	class := factory newSubclassOf: Phexample
 		instanceVariableNames: ''
 		classVariableNames: ''.
@@ -52,14 +52,14 @@ PhexampleTest >> shouldNicelyHandleNotifications [
 	suite := TestSuite new.
 	suite 
 		addTest: (class selector: #throwNotification);
-		addTest: ( class selector: #consumeNotification).
+		addTest: (class selector: #consumeNotification).
 	result := suite run.
-	result passedCount should = 2 .
-	result	failureCount should = 0.
-	result	errorCount should = 0 .
-	result	unexpectedPassCount should = 0.
-	result	unexpectedErrorCount should = 0.
-	result	unexpectedFailureCount should = 0.
+	result passedCount should equal: 2 .
+	result failureCount should equal: 0.
+	result errorCount should equal: 0 .
+	result unexpectedPassCount should equal: 0.
+	result unexpectedErrorCount should equal: 0.
+	result unexpectedFailureCount should equal: 0.
 			
 ]
 

@@ -21,7 +21,7 @@ ForExampleMatcher >> shouldBeKindOfSuperclass [
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldBeSame [
-	[ self should beSameAs: self ] value should = nil.
+	[ self should beSameAs: self ] value should equal: nil.
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -63,7 +63,7 @@ ForExampleMatcher >> shouldEndWith [
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldEqualFive [
-	(2 + 3) should = 5
+	(2 + 3) should equal: 5
 ]
 
 { #category : #'examples-expecting-collections' }
@@ -134,7 +134,7 @@ ForExampleMatcher >> shouldNotBeTrue [
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldNotEqualSeven [
-	(2 + 3) should not = 7
+	(2 + 3) should not equal: 7
 ]
 
 { #category : #'examples-expecting-collections' }
@@ -180,7 +180,7 @@ ForExampleMatcher >> shouldRespondTo [
 
 { #category : #examples }
 ForExampleMatcher >> shouldReturnNilWhenTesting [
-	[ 5 should = 5 ] value should = nil 
+	[ 5 should equal: 5 ] value should equal: nil 
 ]
 
 { #category : #'examples-expecting-performance' }
@@ -191,19 +191,19 @@ ForExampleMatcher >> shouldRunWithin [
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignal [
 
-	[ 5 should = 6 ] should signal: TestFailure.
+	[ 5 should equal: 6 ] should signal: TestFailure.
 ]
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldSignalIfFiveShouldNotEqualFive [
 
-	[ 5 should not = 5 ] should signal: TestFailure.
+	[ 5 should not equal: 5 ] should signal: TestFailure.
 ]
 
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignalIfSignalMissing [
 
-	[ [ 5 should = 5 ] should signal: TestFailure ] should 
+	[ [ 5 should equal: 5 ] should signal: TestFailure ] should 
 		signal: TestFailure 
 		withMessageText: 'Should raise TestFailure but was none'
 ]
@@ -219,7 +219,7 @@ ForExampleMatcher >> shouldSignalIfSignalWrong [
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignalIfUnexpectedSignalOfSubtype [
 
-	[ [ 5 should = 6] should not signal: TestFailure ] should 
+	[ [ 5 should equal: 6] should not signal: TestFailure ] should 
 		signal: TestFailure
 		withMessageText:  'Should not raise TestFailure but did'
 ]
@@ -339,13 +339,13 @@ ForExampleMatcher >> shouldSignalWhenSignalWithMessageTextFails [
 		signal: Error 
 		withMessageText: 'bar' ] on: TestFailure
 		do: [ :ex | 
-			ex messageText should = 'expected ''bar'' but got ''foo'' (using =)' ]
+			ex messageText should equal: 'expected ''bar'' but got ''foo'' (using =)' ]
 ]
 
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignalWithMessage [
 	
-	[ 5 should = 6 ] should 
+	[ 5 should equal: 6 ] should 
 		signal: TestFailure
 		withMessageText: 'expected 6 but got 5 (using =)'
 ]
@@ -353,12 +353,12 @@ ForExampleMatcher >> shouldSignalWithMessage [
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignalWithMessageBlock [
 	
-	[ 5 should = 6 ] should 
+	[ 5 should equal: 6 ] should 
 		signal: TestFailure
 		withMessageText: [ :m | 
 			m should beKindOf: String.
 			m isEmpty should not be true.
-			m should = 'expected 6 but got 5 (using =)'.
+			m should equal: 'expected 6 but got 5 (using =)'.
 		]
 ]
 
@@ -374,10 +374,10 @@ ForExampleMatcher >> shouldTestForSameHashWhenExpectingEqualValues [
 	probe compile: 'hash ^counter := counter + 1'.
 	probe compile: 'printOn: stream stream nextPutAll: ''probe'''.
 	p := probe new.
-	p hash should = 1.
-	p hash should = 2.
-	p hash should = 3.
-	[ p should = p ] should signal: TestFailure
+	p hash should equal: 1.
+	p hash should equal: 2.
+	p hash should equal: 3.
+	[ p should equal: p ] should signal: TestFailure
 		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
 	[ p should not ~= p ] should signal: TestFailure 
 		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
