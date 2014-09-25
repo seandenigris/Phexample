@@ -156,7 +156,7 @@ ConfigurationOfPhexample >> customProjectAttributes [
 
 { #category : #'symbolic versions' }
 ConfigurationOfPhexample >> development: spec [
-	<symbolicVersion: #development>
+	<symbolicVersion: #'development'>
 
 	spec for: #'common' version: '1.2-baseline'.
 
@@ -177,9 +177,10 @@ ConfigurationOfPhexample >> project [
 
 { #category : #'symbolic versions' }
 ConfigurationOfPhexample >> stable: spec [
-	<symbolicVersion: #stable>
+	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.2'.
+	spec for: #'common' version: '2.0'.
+
 ]
 
 { #category : #versions }
@@ -230,5 +231,31 @@ ConfigurationOfPhexample >> version12: spec [
 	spec for: #'pharo2.x' do: [
 		spec package: 'PhexamplePlatform-Pharo20' with: 'PhexamplePlatform-Pharo20-StefanMarr.1'
 	].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version20: spec [
+	<version: '2.0' imports: #('1.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 2.0'.
+		spec author: 'SeanDeNigris'.
+		spec timestamp: '9/25/2014 15:41'.
+		spec package: 'Phexample' with: 'Phexample-SeanDeNigris.73'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
 
 ]
