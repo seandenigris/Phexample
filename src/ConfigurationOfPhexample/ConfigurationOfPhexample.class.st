@@ -179,7 +179,7 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '2.0'.
+	spec for: #'common' version: '2.1'.
 
 ]
 
@@ -244,6 +244,32 @@ ConfigurationOfPhexample >> version20: spec [
 		spec author: 'SeanDeNigris'.
 		spec timestamp: '9/25/2014 15:41'.
 		spec package: 'Phexample' with: 'Phexample-SeanDeNigris.73'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version21: spec [
+	<version: '2.1' imports: #('1.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 2.1'.
+		spec author: 'SeanDeNigris'.
+		spec timestamp: '5/27/2015 23:27'.
+		spec package: 'Phexample' with: 'Phexample-SeanDeNigris.74'. ].
 
 	spec for: #'squeak' do: [
 		spec 
