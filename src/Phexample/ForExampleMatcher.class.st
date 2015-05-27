@@ -4,6 +4,13 @@ Class {
 	#category : #'Phexample-Test'
 }
 
+{ #category : #'examples-expecting' }
+ForExampleMatcher >> shouldBeCloseTo [
+  600.123456789 should beCloseTo: 600.1.
+	600.123456789 should not beCloseTo: 600.0.
+	600.123456789 should not beCloseTo: 600.2
+]
+
 { #category : #'examples-expecting-boolean' }
 ForExampleMatcher >> shouldBeFalse [
   (Set with: 42) isEmpty should beFalse.

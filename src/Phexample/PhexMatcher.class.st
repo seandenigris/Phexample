@@ -96,6 +96,11 @@ PhexMatcher >> be [
 	state := state copyWith: #be
 ]
 
+{ #category : #expecting }
+PhexMatcher >> beCloseTo: expected [
+	^ self expect: expected using: #closeTo:
+]
+
 { #category : #'expecting-boolean' }
 PhexMatcher >> beFalse [
 	^self be false
