@@ -32,7 +32,7 @@ DiffExpectationDebugAction >> executeAction [
 	| expected actual |
 	expected := self interruptedContext sender arguments first.
 	actual := self interruptedContext receiver value.
-	(DiffMorph from: expected to: actual) openInWindow.
+	(DiffMorph from: expected phAsText to: actual phAsText) openInWindow.
 ]
 
 { #category : #accessing }
