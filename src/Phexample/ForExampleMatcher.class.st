@@ -28,7 +28,7 @@ ForExampleMatcher >> shouldBeKindOfSuperclass [
 
 { #category : #'examples-expecting' }
 ForExampleMatcher >> shouldBeSame [
-	[ self should beSameAs: self ] value should equal: nil.
+	self should beSameAs: self 
 ]
 
 { #category : #'examples-expecting-boolean' }
@@ -94,7 +94,7 @@ ForExampleMatcher >> shouldHandlePathologicCaseOfBooleanPropertyWhenFailing [
 
 { #category : #examples }
 ForExampleMatcher >> shouldHaveTestsInThisClass [
-	self class allTestSelectors isEmpty should not be true.
+	self class allTestSelectors isEmpty should not be: true.
 	self class allTestSelectors size should > 20.
 	
 	
@@ -125,7 +125,7 @@ ForExampleMatcher >> shouldMatchRegex [
 ForExampleMatcher >> shouldNotBeFalse [
   |set|
 	set := Set new. 
-	set isEmpty should not be false.
+	set isEmpty should not be: false.
 	^set
 ]
 
@@ -154,17 +154,6 @@ ForExampleMatcher >> shouldNotMatchRegex [
 	'aaa' should not matchRegex: 'ba*'.
 ]
 
-{ #category : #'examples-expecting-boolean' }
-ForExampleMatcher >> shouldNotOffByOneWhenFindingNameOfUnknownMessage [
-	[ #() isEmpty should be false should ] " kinda artifical example, 
-		but exercises the off-by-one nature of the PC which points after
-		#false when looking for the message name, ie we must  make sure
-		that we dont search to far which would yield #false instead of
-		the correct #isEmpty message."
-		should signal: TestFailure
-		withMessageText: 'expected #isEmpty to be false'
-]
-
 { #category : #'examples-expecting-reflection' }
 ForExampleMatcher >> shouldNotRespondTo [
 	Object new should not respondTo: #zork
@@ -185,42 +174,9 @@ ForExampleMatcher >> shouldRespondTo [
 	Object new should respondTo: #yourself
 ]
 
-{ #category : #examples }
-ForExampleMatcher >> shouldReturnNilWhenTesting [
-	[ 5 should equal: 5 ] value should equal: nil 
-]
-
 { #category : #'examples-expecting-performance' }
 ForExampleMatcher >> shouldRunWithin [
 	[ "makes the Kessel Run in less than twelve parsecs" ] should runWithin: 10 milliSeconds 
-]
-
-{ #category : #'examples-expecting-error' }
-ForExampleMatcher >> shouldSignal [
-
-	[ 5 should equal: 6 ] should signal: TestFailure.
-]
-
-{ #category : #'examples-expecting' }
-ForExampleMatcher >> shouldSignalIfFiveShouldNotEqualFive [
-
-	[ 5 should not equal: 5 ] should signal: TestFailure.
-]
-
-{ #category : #'examples-expecting-error' }
-ForExampleMatcher >> shouldSignalIfSignalMissing [
-
-	[ [ 5 should equal: 5 ] should signal: TestFailure ] should 
-		signal: TestFailure 
-		withMessageText: 'Should raise TestFailure but was none'
-]
-
-{ #category : #'examples-expecting-error' }
-ForExampleMatcher >> shouldSignalIfSignalWrong [
-
-	[ [ self error ] should signal: TestFailure ] should 
-		signal: Error 
-		"withMessageText: 'Expected class TestFailure but was Error'"
 ]
 
 { #category : #'examples-expecting-error' }
@@ -236,11 +192,6 @@ ForExampleMatcher >> shouldSignalWhenBeFalseFails [
 	[ Set new isEmpty should beFalse ] should
 		signal: TestFailure
 		withMessageText: 'expected #isEmpty to be false'
-]
-
-{ #category : #'examples-expecting-reflection' }
-ForExampleMatcher >> shouldSignalWhenBeKindOfFails [
-	[ 'hello' should beKindOf: Number ] should signal: TestFailure
 ]
 
 { #category : #'examples-expecting' }
@@ -271,23 +222,6 @@ ForExampleMatcher >> shouldSignalWhenEndWithFails [
 		withMessageText: 'expected ''Xdef'' but got ''abcdef'' (using endsWith:)' 
 ]
 
-{ #category : #'examples-expecting' }
-ForExampleMatcher >> shouldSignalWhenGreaterThanFails [
-  [ 5 should > 6 ] should signal: TestFailure withMessageText: 'expected 6 but got 5 (using >)'.
-  [ 4 should > 4 ] should signal: TestFailure withMessageText: 'expected 4 but got 4 (using >)'.
-]
-
-{ #category : #'examples-expecting-collections' }
-ForExampleMatcher >> shouldSignalWhenIncludeFails [
-	[ #(foo bar) should include: #qux ] should signal: TestFailure
-]
-
-{ #category : #'examples-expecting' }
-ForExampleMatcher >> shouldSignalWhenLesserThanFails [
-  [ 6 should < 5 ] should signal: TestFailure withMessageText: 'expected 5 but got 6 (using <)'.
-  [ 4 should < 4 ] should signal: TestFailure withMessageText: 'expected 4 but got 4 (using <)'.
-]
-
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldSignalWhenMatchRegexFails [
 	[ 'aaa' should matchRegex: 'ba*' ] should 
@@ -309,23 +243,11 @@ ForExampleMatcher >> shouldSignalWhenNotBeTrueFails [
 		withMessageText: 'did not expect #isEmpty to be true'
 ]
 
-{ #category : #'examples-expecting-collections' }
-ForExampleMatcher >> shouldSignalWhenNotIncludeFails [
-	[ #(foo bar) should not include: #foo ] should signal: TestFailure
-]
-
 { #category : #'examples-expecting-string' }
 ForExampleMatcher >> shouldSignalWhenNotMatchRegexFails [
 	[ 'aaa' should not matchRegex: 'a*' ] should 
 		signal: TestFailure 
 		withMessageText: 'expected not to get ''a*'' but got ''aaa'' (using matchesRegex:)'
-]
-
-{ #category : #'examples-expecting-reflection' }
-ForExampleMatcher >> shouldSignalWhenNotRespondToFails [
-	[ Object new should not respondTo: #yourself ] should
-		signal: TestFailure
-		withMessageText: 'expected an Object not to respond to #yourself (using respondsTo:)' 
 ]
 
 { #category : #'examples-expecting-reflection' }
@@ -360,35 +282,11 @@ ForExampleMatcher >> shouldSignalWithMessage [
 { #category : #'examples-expecting-error' }
 ForExampleMatcher >> shouldSignalWithMessageBlock [
 	
-	[ 5 should equal: 6 ] should 
-		signal: TestFailure
+	[ self error: 'test error' ] should 
+		signal: Error
 		withMessageText: [ :m | 
 			m should beKindOf: String.
-			m isEmpty should not be true.
-			m should equal: 'expected 6 but got 5 (using =)'.
+			m isEmpty should not be: true.
+			m should equal: 'test error'.
 		]
-]
-
-{ #category : #'examples-expecting' }
-ForExampleMatcher >> shouldTestForSameHashWhenExpectingEqualValues [
-	| factory probe p |
-	factory := ClassFactoryForTestCase new.
-	probe := factory 
-		newSubclassOf: Object 
-		instanceVariableNames: 'counter'
-		classVariableNames: ''.
-	probe compile: 'initialize counter := 0'.
-	probe compile: 'hash ^counter := counter + 1'.
-	probe compile: 'printOn: stream stream nextPutAll: ''probe'''.
-	p := probe new.
-	p hash should equal: 1.
-	p hash should equal: 2.
-	p hash should equal: 3.
-	[ p should equal: p ] should signal: TestFailure
-		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
-	[ p should not ~= p ] should signal: TestFailure 
-		withMessageText: 'expected same hash for probe and probe (using hash implied by =)'.
-	factory cleanUp.
-
-
 ]

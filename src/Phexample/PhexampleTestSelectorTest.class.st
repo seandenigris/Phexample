@@ -6,16 +6,16 @@ Class {
 
 { #category : #tests }
 PhexampleTestSelectorTest >> shouldAllowShouldInBeginningOfSelector [
-	(Phexample isTest: #shouldBeTest) should be true
+	(Phexample isTest: #shouldBeTest) should be: true
 ]
 
 { #category : #tests }
 PhexampleTestSelectorTest >> shouldAllowShouldInMiddleOfSelector [
-	(Phexample isTest: #fooShouldBeAllowed) should be true
+	(Phexample isTest: #fooShouldBeAllowed) should be: true
 ]
 
 { #category : #tests }
 PhexampleTestSelectorTest >> shouldNotAllowSelectorsWithArguments [
-	(Phexample isTest: #shouldFoo:) should be false.
-	(Phexample isTest: #fooShould:NotBeAllowed:) should be false.
+	(Phexample isTest: #shouldFoo:) should be: false.
+	(Phexample isTest: #fooShould:NotBeAllowed:) should be: false.
 ]
