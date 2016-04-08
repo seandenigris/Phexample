@@ -146,6 +146,36 @@ ConfigurationOfPhexample >> baseline12: spec [
 		spec package: 'PhexamplePlatform-Pharo20' with: [spec requires: 'Phexample'] ].
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhexample >> baseline20: spec [
+	<version: '2.0-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://www.smalltalkhub.com/mc/Phexample/Phexample/main'.
+		spec 
+			project: 'StateSpecs' with: [
+		 	    spec
+			 	  	className: 'ConfigurationOfStateSpecs';
+					version: #development;
+			  		repository: 'http://www.smalltalkhub.com/mc/dionisiy/StateSpecs/main'].
+		spec package: 'Phexample' ].
+
+	spec for: #squeak do: [
+		spec package: 'Phexample' with: [spec requires: 'Regex-Core'].
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'].
+		spec package: 'Pharo-Compatibility' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Scratchpad-fbs'].
+		spec package: 'Regex-Core' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Pharo20']].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'] ].
+	
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20' with: [spec requires: 'Phexample'] ].
+]
+
 { #category : #accessing }
 ConfigurationOfPhexample >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -270,6 +300,33 @@ ConfigurationOfPhexample >> version21: spec [
 		spec author: 'SeanDeNigris'.
 		spec timestamp: '5/27/2015 23:27'.
 		spec package: 'Phexample' with: 'Phexample-SeanDeNigris.74'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version30: spec [
+	<version: '3.0' imports: #('2.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 3.0 based on StateSpecs'.
+		spec author: 'DenisKudryashov'.
+		spec timestamp: '4/8/2065 18:50'.
+		spec project: 'StateSpecs' with: #'stable'.
+		spec package: 'Phexample' with: 'Phexample-DenisKudryashov.75'. ].
 
 	spec for: #'squeak' do: [
 		spec 
