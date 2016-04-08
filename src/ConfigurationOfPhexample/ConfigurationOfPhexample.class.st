@@ -188,7 +188,7 @@ ConfigurationOfPhexample >> customProjectAttributes [
 ConfigurationOfPhexample >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '1.2-baseline'.
+	spec for: #'common' version: '2.0-baseline'.
 
 ]
 
@@ -209,7 +209,7 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '2.1'.
+	spec for: #'common' version: '3.0'.
 
 ]
 
