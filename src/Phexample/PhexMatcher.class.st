@@ -21,17 +21,13 @@ value
 "
 Class {
 	#name : #PhexMatcher,
-	#superclass : #SpecOfShouldExpression,
+	#superclass : #Object,
 	#instVars : [
+		'value',
 		'state'
 	],
 	#category : #'Phexample-Core'
 }
-
-{ #category : #initialization }
-PhexMatcher class >> initialize [
-	self beCurrent
-]
 
 { #category : #documentation }
 PhexMatcher class >> rewriteRules [
@@ -77,22 +73,27 @@ PhexMatcher class >> with: anObject state: aState [
 
 { #category : #expecting }
 PhexMatcher >> < expected [
-	self beLessThan: expected
+	^self expect: expected using: #<
 ]
 
 { #category : #expecting }
 PhexMatcher >> <= expected [
-	self beLessOrEqualThan: expected
+	^self expect: expected using: #<=
 ]
 
 { #category : #expecting }
 PhexMatcher >> > expected [
-	^self beGreaterThan: expected
+	^self expect: expected using: #>
 ]
 
 { #category : #expecting }
 PhexMatcher >> >= expected [
-	^self beGreaterOrEqualThan: expected
+	^self expect: expected using: #>=
+]
+
+{ #category : #'expecting-boolean' }
+PhexMatcher >> be [
+	state := state copyWith: #be
 ]
 
 { #category : #expecting }
@@ -102,17 +103,31 @@ PhexMatcher >> beCloseTo: expected [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> beFalse [
-	^self be: false
+	^self be false
+]
+
+{ #category : #'expecting-reflection' }
+PhexMatcher >> beKindOf: expectedClass [ 
+	^self 
+		expect: [ value isKindOf: expectedClass ]
+		describeShould: 
+			[ 'expected kind of <1p> but got instance of <2p> (using isKindOf)' 
+				expandMacrosWith: expectedClass
+				with: value class ]
+		describeShouldNot: 
+			[ 'expected not to get kind of <1p> but got instance of <2p> (using isKindOf)' 
+				expandMacrosWith: expectedClass
+				with: value class ]
 ]
 
 { #category : #expecting }
 PhexMatcher >> beSameAs: expected [
-	^ self be: expected
+	^ self expect: expected using: #==
 ]
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> beTrue [
-	^self be: true
+	^self be true
 ]
 
 { #category : #'expecting-string' }
@@ -125,7 +140,7 @@ PhexMatcher >> beginWith: aPrefix [
 PhexMatcher >> change: aBlock [ 
 	| before after |
 	before := aBlock value.
-	receiver value.
+	value value.
 	after := aBlock value.
 	before should not equal: after.	
 ]
@@ -133,7 +148,7 @@ PhexMatcher >> change: aBlock [
 { #category : #'expecting-change' }
 PhexMatcher >> change: aBlock from: before to: after [
 	(self should: aBlock value) = before.
-	receiver value.
+	value value.
 	(self should: aBlock value)  = after.
 ]
 
@@ -148,14 +163,22 @@ PhexMatcher >> endWith: aSuffix [
 	
 ]
 
+{ #category : #expecting }
+PhexMatcher >> equal: expected [
+	self expect: expected using: #=.
+	self isShould ifTrue: [ self expectSameHash: expected ].
+	^nil
+	
+]
+
 { #category : #'expecting-collections' }
 PhexMatcher >> equalIgnoringOrder: anotherCollection [
-	self expect: [ receiver sorted = anotherCollection sorted] 
+	self expect: [ value sorted = anotherCollection sorted] 
 		describeShould:  ['Expected <1p> to equal <2p> ignoring order, but didn''t.' 
-				expandMacrosWith: receiver 
+				expandMacrosWith: value 
 				with: anotherCollection ]  
 		describeShouldNot: ['Expected <1p> to not equal <2p> ignoring order, but did.'
-			 	expandMacrosWith: receiver
+			 	expandMacrosWith: value
 				with: anotherCollection ]
 ]
 
@@ -172,23 +195,23 @@ PhexMatcher >> expect: aBlock describeShould: shouldBlock describeShouldNot: sho
 
 { #category : #private }
 PhexMatcher >> expect: expected using: aSymbol [
-	^self expect: [ receiver perform: aSymbol with: expected ]
+	^self expect: [ value perform: aSymbol with: expected ]
   		describeShould: [ ('expected <1p> but got <2p> (using <3s>)'
 								expandMacrosWith: expected
-								with: receiver
+								with: value
 								with: aSymbol) ]
   		describeShouldNot: [ ('expected not to get <1p> but got <2p> (using <3s>)'
 								expandMacrosWith: expected
-								with: receiver
+								with: value
 								with: aSymbol) ]
 
 ]
 
 { #category : #private }
 PhexMatcher >> expectSameHash: expected [
-	receiver hash = expected hash ifFalse: [
+	value hash = expected hash ifFalse: [
 		TestFailure signal: ('expected same hash for <1p> and <2p> (using hash implied by =)'
-			expandMacrosWith: receiver
+			expandMacrosWith: value
 			with: expected) ].
 	^nil
 ]
@@ -196,7 +219,7 @@ PhexMatcher >> expectSameHash: expected [
 { #category : #private }
 PhexMatcher >> expectedUnknownMessageToReturn: expected [ 
 	state := state copyWithout: #be.
-	^self expect: [ receiver = expected ]
+	^self expect: [ value = expected ]
 		describeShould: [ 'expected #<1s> to be <2p>' 
 				expandMacrosWith: self findNameOfUnknownMessage
 				with: expected ]
@@ -231,6 +254,11 @@ PhexMatcher >> findNameOfUnknownMessage [
 	^sent top
 ]
 
+{ #category : #'expecting-collections' }
+PhexMatcher >> haveEqualElements: element [
+	self expect: element using: #hasEqualElements: 
+]
+
 { #category : #'TDD todos' }
 PhexMatcher >> implement: aDescription [
 	TestTodo signal: aDescription
@@ -241,10 +269,14 @@ PhexMatcher >> implemented [
 	TestTodo signal.
 ]
 
+{ #category : #'expecting-collections' }
+PhexMatcher >> include: element [
+	self expect: element using: #includes: 
+]
+
 { #category : #private }
 PhexMatcher >> initialize [ 
-	super initialize.
-	state := #()
+ state := #()
 ]
 
 { #category : #private }
@@ -265,19 +297,32 @@ PhexMatcher >> matchRegex: regexString [
 
 { #category : #'expecting-boolean' }
 PhexMatcher >> nil [
-	^self be: nil
+	^self expectedUnknownMessageToReturn: nil
 ]
 
 { #category : #expecting }
 PhexMatcher >> not [
-	super not.
 	state := state copyWith: #not
+]
+
+{ #category : #'expecting-reflection' }
+PhexMatcher >> respondTo: aSelector [
+	^self 
+		expect: [ value respondsTo: aSelector ]
+		describeShould: 
+			[ 'expected <1p> to respond to <2p> (using respondsTo:)' 
+				expandMacrosWith: value 
+			   with: aSelector ]
+		describeShouldNot: 
+			[ 'expected <1p> not to respond to <2p> (using respondsTo:)' 
+				expandMacrosWith: value 
+			   with: aSelector ]
 ]
 
 { #category : #'expecting-performance' }
 PhexMatcher >> runWithin: aDuration [ 
 	^ self
-		expect: [[receiver value.
+		expect: [[value value.
 			true]
 				valueWithin: aDuration
 				onTimeout: [false]]
@@ -287,7 +332,7 @@ PhexMatcher >> runWithin: aDuration [
 
 { #category : #private }
 PhexMatcher >> setValue: anObject [
-	receiver := anObject 
+	value := anObject 
 ]
 
 { #category : #private }
@@ -301,13 +346,18 @@ PhexMatcher >> should: anObject [
 
 { #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass [ 
-	self raise: errorClass
+	| signaled |
+	signaled := false.
+	value on: errorClass do: [ :ex | signaled := true ].
+	self expect: signaled 
+		describeShould: ['Should raise <1p> but was none' expandMacrosWith: errorClass] 
+		describeShouldNot: ['Should not raise <1p> but did' expandMacrosWith: errorClass]
 ]
 
 { #category : #'expecting-error' }
 PhexMatcher >> signal: errorClass withMessageText: message [
 
-	receiver on: Exception do: [ :ex | 
+	value on: Exception do: [ :ex | 
 		(self should: ex) beKindOf: errorClass.
 		message isBlock 
 			ifTrue: [ message value: ex messageText ]
@@ -340,6 +390,9 @@ PhexMatcher >> true [
 
 { #category : #expecting }
 PhexMatcher >> ~= expected [
-	self not equal: expected
+	self expect: expected using: #~=.
+	self isShouldNot ifTrue: [ self expectSameHash: expected ].
+	^nil
+	
 	
 ]
