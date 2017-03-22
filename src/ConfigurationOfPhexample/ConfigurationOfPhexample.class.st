@@ -209,7 +209,7 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '3.0'.
+	spec for: #'common' version: '3.1'.
 
 ]
 
@@ -327,6 +327,33 @@ ConfigurationOfPhexample >> version30: spec [
 		spec timestamp: '4/8/2065 18:50'.
 		spec project: 'StateSpecs' with: #'stable'.
 		spec package: 'Phexample' with: 'Phexample-DenisKudryashov.75'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version31: spec [
+	<version: '3.1' imports: #('2.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'Failing tests fixed'.
+		spec author: 'PavelKrivanek'.
+		spec timestamp: '3/22/2017 14:40'.
+		spec project: 'StateSpecs' with: #'stable'.
+		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
 
 	spec for: #'squeak' do: [
 		spec 
