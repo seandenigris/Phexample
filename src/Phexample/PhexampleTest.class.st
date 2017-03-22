@@ -32,7 +32,7 @@ PhexampleTest >> shouldExecuteExampleMethod [
 	result := testcase run.
 	result tests size should equal: 1.
 	result passed size should equal: 1.
-	hasRun should be true
+	hasRun should be: true
 ]
 
 { #category : #examples }
@@ -65,7 +65,7 @@ PhexampleTest >> shouldNicelyHandleNotifications [
 
 { #category : #examples }
 PhexampleTest >> shouldNotHaveTestsInPhexample [
-	Phexample allTestSelectors isEmpty should be true.
+	Phexample allTestSelectors isEmpty should be: true.
 	
 	
 ]
