@@ -211,7 +211,7 @@ ConfigurationOfPhexample >> stable: spec [
 
 	spec for: #'common' version: '3.1'.
 	
-	spec for: #'pharo4' version: '3.2'
+	spec for: #'pharo4.x' version: '3.2'
 
 ]
 
