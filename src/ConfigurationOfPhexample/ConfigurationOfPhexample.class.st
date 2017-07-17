@@ -210,6 +210,8 @@ ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #'stable'>
 
 	spec for: #'common' version: '3.1'.
+	
+	spec for: #'pharo4' version: '3.2'
 
 ]
 
@@ -353,6 +355,33 @@ ConfigurationOfPhexample >> version31: spec [
 		spec author: 'PavelKrivanek'.
 		spec timestamp: '3/22/2017 14:40'.
 		spec project: 'StateSpecs' with: #'stable'.
+		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version32: spec [
+	<version: '3.2' imports: #('2.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'We need a version usable in Pharo 4'.
+		spec author: 'CyrilFerlicot'.
+		spec timestamp: '7/17/2017 14:00'.
+		spec project: 'StateSpecs' with: '2.45'.
 		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
 
 	spec for: #'squeak' do: [
