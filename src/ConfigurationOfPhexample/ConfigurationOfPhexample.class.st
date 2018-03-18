@@ -176,6 +176,32 @@ ConfigurationOfPhexample >> baseline20: spec [
 		spec package: 'PhexamplePlatform-Pharo20' with: [spec requires: 'Phexample'] ].
 ]
 
+{ #category : #baselines }
+ConfigurationOfPhexample >> baseline21: spec [
+	<version: '2.1-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://www.smalltalkhub.com/mc/Phexample/Phexample/main'.
+		spec baseline: 'StateSpecs' with: [
+		 	  spec repository: 'github://dionisiydk/StateSpecs:v2.4.x'].
+		spec package: 'Phexample' ].
+
+	spec for: #squeak do: [
+		spec package: 'Phexample' with: [spec requires: 'Regex-Core'].
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'].
+		spec package: 'Pharo-Compatibility' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Scratchpad-fbs'].
+		spec package: 'Regex-Core' with: [
+			spec repository: 'http://ss3.gemstone.com/ss/Pharo20']].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14' with: [spec requires: 'Phexample'] ].
+	
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20' with: [spec requires: 'Phexample'] ].
+]
+
 { #category : #accessing }
 ConfigurationOfPhexample >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -188,7 +214,7 @@ ConfigurationOfPhexample >> customProjectAttributes [
 ConfigurationOfPhexample >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '2.0-baseline'.
+	spec for: #'common' version: '2.1-baseline'.
 
 ]
 
@@ -209,7 +235,7 @@ ConfigurationOfPhexample >> project [
 ConfigurationOfPhexample >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '3.1'.
+	spec for: #'common' version: '3.3'.
 	
 	spec for: #'pharo4.x' version: '3.2'
 
@@ -382,6 +408,32 @@ ConfigurationOfPhexample >> version32: spec [
 		spec author: 'CyrilFerlicot'.
 		spec timestamp: '7/17/2017 14:00'.
 		spec project: 'StateSpecs' with: '2.45'.
+		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
+
+	spec for: #'squeak' do: [
+		spec 
+			package: 'Phexample';
+			package: 'PhexamplePlatform-Pharo14';
+			package: 'Pharo-Compatibility';
+			package: 'Regex-Core'. ].
+
+	spec for: #'pharo1.x' do: [
+		spec package: 'PhexamplePlatform-Pharo14'. ].
+
+	spec for: #'pharo2.x' do: [
+		spec package: 'PhexamplePlatform-Pharo20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfPhexample >> version33: spec [
+	<version: '3.3' imports: #('2.1-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'Failing tests fixed'.
+		spec author: 'DenisKudriashov'.
+		spec timestamp: '3/18/2018 13:40'.
 		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
 
 	spec for: #'squeak' do: [
