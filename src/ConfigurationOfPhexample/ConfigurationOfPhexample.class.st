@@ -434,7 +434,7 @@ ConfigurationOfPhexample >> version33: spec [
 		spec description: 'Failing tests fixed'.
 		spec author: 'DenisKudriashov'.
 		spec timestamp: '3/18/2018 13:40'.
-		spec package: 'Phexample' with: 'Phexample-PavelKrivanek.76'. ].
+		spec package: 'Phexample' with: 'Phexample-DenisKudryashov.77'. ].
 
 	spec for: #'squeak' do: [
 		spec 
